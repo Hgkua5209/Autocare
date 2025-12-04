@@ -50,7 +50,7 @@
         </p>
 
         <!-- Button -->
-        <a href="#"
+        <a href="{{ route('checksurvey') }}"
            class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800">
             Explore
         </a>
