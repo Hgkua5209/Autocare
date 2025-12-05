@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\MedicalSurvey;
-
+//test again
 class MedicalAnalytics
 {
     private $survey;
