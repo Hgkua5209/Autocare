@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- test -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,13 +13,13 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -27,20 +28,20 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-        
+
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 30px 40px;
             text-align: center;
         }
-        
+
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
+
         .patient-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -49,14 +50,14 @@
             padding: 25px 40px;
             border-bottom: 3px solid #e9ecef;
         }
-        
+
         .info-item {
             padding: 15px;
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
+
         .info-item strong {
             color: #667eea;
             display: block;
@@ -65,18 +66,18 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .info-item span {
             font-size: 1.2em;
             font-weight: 600;
             color: #333;
         }
-        
+
         .section {
             padding: 30px 40px;
             border-bottom: 1px solid #eee;
         }
-        
+
         .section-title {
             color: #667eea;
             font-size: 1.5em;
@@ -84,14 +85,14 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #667eea;
         }
-        
+
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
             margin-top: 20px;
         }
-        
+
         .chart-container {
             background: white;
             padding: 20px;
@@ -99,25 +100,25 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transition: transform 0.3s;
         }
-        
+
         .chart-container:hover {
             transform: translateY(-5px);
         }
-        
+
         .chart-title {
             text-align: center;
             color: #555;
             margin-bottom: 15px;
             font-weight: 600;
         }
-        
+
         .autoimmune-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
-        
+
         .autoimmune-item {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
@@ -125,47 +126,47 @@
             border-radius: 15px;
             text-align: center;
         }
-        
+
         .condition {
             font-size: 1.1em;
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         .match {
             font-size: 2em;
             font-weight: 700;
             margin: 10px 0;
         }
-        
+
         .conditions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
             margin-top: 20px;
         }
-        
+
         .condition-category {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 15px;
             border-left: 5px solid #667eea;
         }
-        
+
         .category-title {
             color: #667eea;
             margin-bottom: 15px;
             font-size: 1.2em;
             font-weight: 600;
         }
-        
+
         .symptom-item {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px dashed #ddd;
         }
-        
+
         .recommendations {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
@@ -173,18 +174,18 @@
             border-radius: 15px;
             margin-top: 20px;
         }
-        
+
         .recommendations ul {
             list-style: none;
             padding-left: 20px;
         }
-        
+
         .recommendations li {
             margin-bottom: 10px;
             padding-left: 25px;
             position: relative;
         }
-        
+
         .recommendations li:before {
             content: "✓";
             position: absolute;
@@ -192,14 +193,14 @@
             color: #00ff88;
             font-weight: bold;
         }
-        
+
         .footer {
             text-align: center;
             padding: 30px;
             background: #f8f9fa;
             color: #666;
         }
-        
+
         .cta-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -214,19 +215,19 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
-        
+
         .severity-badge {
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.9em;
             font-weight: 600;
         }
-        
+
         .severity-high { background: #ff4757; color: white; }
         .severity-medium { background: #ffa502; color: white; }
         .severity-low { background: #2ed573; color: white; }
@@ -239,7 +240,7 @@
             <h1>📊 Analytical Report</h1>
             <p>Generated on {{ now()->format('F j, Y') }}</p>
         </div>
-        
+
         <!-- Patient Information -->
         <div class="patient-info">
             <div class="info-item">
@@ -267,7 +268,7 @@
                 <span>{{ number_format($survey->bmi, 1) }}</span>
             </div>
         </div>
-        
+
         <!-- Autoimmune Section -->
         <div class="section">
             <h2 class="section-title">🩺 Autoimmune Analysis</h2>
@@ -290,7 +291,7 @@
                 @endforeach
             </div>
         </div>
-        
+
         <!-- Charts Section -->
         <div class="section">
             <h2 class="section-title">📈 Health Metrics</h2>
@@ -300,13 +301,13 @@
                     <div class="chart-title">Symptom Severity</div>
                     <canvas id="symptomChart"></canvas>
                 </div>
-                
+
                 <!-- Health Scores Chart -->
                 <div class="chart-container">
                     <div class="chart-title">Health Scores</div>
                     <canvas id="healthChart"></canvas>
                 </div>
-                
+
                 <!-- Triggers Chart -->
                 <div class="chart-container">
                     <div class="chart-title">Potential Triggers</div>
@@ -314,7 +315,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Conditions Section -->
         <div class="section">
             <h2 class="section-title">📋 Conditions & Symptoms</h2>
@@ -327,9 +328,9 @@
                         <span>{{ $symptom }}</span>
                         <div>
                             @php
-                                $badgeClass = $score >= 7 ? 'severity-high' : 
+                                $badgeClass = $score >= 7 ? 'severity-high' :
                                              ($score >= 4 ? 'severity-medium' : 'severity-low');
-                                $frequency = $score >= 7 ? 'Daily' : 
+                                $frequency = $score >= 7 ? 'Daily' :
                                             ($score >= 4 ? 'Weekly' : 'Monthly');
                             @endphp
                             <span class="severity-badge {{ $badgeClass }}">
@@ -340,7 +341,7 @@
                     </div>
                     @endforeach
                 </div>
-                
+
                 <!-- Triggers -->
                 <div class="condition-category">
                     <div class="category-title">Potential Triggers</div>
@@ -365,7 +366,7 @@
                     </div>
                     @endforeach
                 </div>
-                
+
                 <!-- Lifestyle -->
                 <div class="condition-category">
                     <div class="category-title">Lifestyle Factors</div>
@@ -394,7 +395,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Recommendations -->
         <div class="section">
             <h2 class="section-title">💡 Personalized Recommendations</h2>
@@ -406,7 +407,7 @@
         </ul>
             </div>
         </div>
-        
+
         <!-- CTA Section -->
         <div class="section" style="text-align: center;">
             <h2 class="section-title">🌟 Start Your Health Journey</h2>
@@ -416,7 +417,7 @@
             </p>
             <button class="cta-button" onclick="startJourney()">Begin 2-Week Program</button>
         </div>
-        
+
         <!-- Footer -->
         <div class="footer">
             <p>© {{ date('Y') }} AutoCare Compass. All rights reserved.</p>
@@ -428,7 +429,7 @@
             <h2 class="section-title">⚠️ Overall Risk Assessment</h2>
             @php
                 $riskLevel = $analytics->getRiskLevel();
-                $riskColor = $riskLevel == 'High' ? '#ff4757' : 
+                $riskColor = $riskLevel == 'High' ? '#ff4757' :
                             ($riskLevel == 'Medium' ? '#ffa502' : '#2ed573');
             @endphp
             <div style="font-size: 2.5em; color: {{ $riskColor }}; font-weight: 700; margin: 10px 0;">
@@ -449,7 +450,7 @@ const symptomData = {
         borderWidth: 2
     }]
 };
-    
+
     const healthData = {
         labels: {!! json_encode(array_keys($reportData['healthScores'])) !!},
         datasets: [{
@@ -458,7 +459,7 @@ const symptomData = {
             backgroundColor: 'rgba(54, 162, 235, 0.6)'
         }]
     };
-        
+
         const triggerData = {
             labels: {!! json_encode(array_keys($reportData['triggers'])) !!},
             datasets: [{
@@ -471,7 +472,7 @@ const symptomData = {
                 borderColor: '#fff'
             }]
         };
-        
+
         // Initialize charts when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Symptom Chart
@@ -493,7 +494,7 @@ const symptomData = {
                     }
                 }
             });
-            
+
             // Health Chart
             const healthCtx = document.getElementById('healthChart').getContext('2d');
             new Chart(healthCtx, {
@@ -524,7 +525,7 @@ const symptomData = {
                     }
                 }
             });
-            
+
             // Trigger Chart
             const triggerCtx = document.getElementById('triggerChart').getContext('2d');
             new Chart(triggerCtx, {
@@ -540,13 +541,13 @@ const symptomData = {
                 }
             });
         });
-        
+
         function startJourney() {
             alert('Starting your 2-week health journey! You will receive daily tracking reminders.');
             // In a real app, you would redirect to a program page
             // window.location.href = '/2-week-program';
         }
-        
+
         // Print functionality
         function printReport() {
             window.print();
