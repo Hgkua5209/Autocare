@@ -29,8 +29,42 @@
 
         <!-- Auth Buttons -->
         <div class="flex items-center space-x-3">
-            <a href="/login" class="px-4 py-1 border rounded-md hover:bg-gray-100">Sign in</a>
-            <a href="/register" class="px-4 py-1 bg-black text-white rounded-md hover:bg-gray-800">Register</a>
+            @auth
+                @php
+                    $dashboardRoute = auth()->user()?->role === 'admin'
+                        ? route('admin.dashboard')
+                        : route('dashboard');
+                @endphp
+
+                <span class="text-gray-700 font-medium">
+                    Hi, {{ auth()->user()->name }}
+                </span>
+
+                <a href="{{ $dashboardRoute }}"
+                class="px-4 py-1 border rounded-md hover:bg-gray-100">
+                    Dashboard
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                            class="px-4 py-1 bg-black text-white rounded-md hover:bg-gray-800">
+                        Logout
+                    </button>
+                </form>
+            @endauth
+
+            @guest
+                <a href="{{ route('login') }}"
+                class="px-4 py-1 border rounded-md hover:bg-gray-100">
+                    Sign in
+                </a>
+
+                <a href="{{ route('register') }}"
+                class="px-4 py-1 bg-black text-white rounded-md hover:bg-gray-800">
+                    Register
+                </a>
+            @endguest
         </div>
     </nav>
 

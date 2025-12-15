@@ -20,11 +20,19 @@ use Illuminate\Http\Request; // ✅ ADD THIS!
 // FIXED: Only ONE route for '/'
 Route::get('/', function () {
     return view('index'); // Changed from 'welcome' to 'index'
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -58,3 +66,15 @@ Route::get('/test-store', function() {
 // Test if controller methods work
 Route::get('/test-controller-show', [MedicalSurveyController::class, 'showSurvey']);
 Route::get('/test-controller-report', [MedicalSurveyController::class, 'showReport']);
+
+
+// User dashboard
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+// Admin dashboard
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->middleware(['auth', 'admin'])->name('admin.dashboard');
+
