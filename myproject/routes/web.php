@@ -78,3 +78,7 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'admin'])->name('admin.dashboard');
 
+//Services page
+Route::get('/services', function () {
+    return view('services');
+})->middleware(['auth'])->name('services');

@@ -9,87 +9,24 @@
 </head>
 
 <body class="bg-white">
+    <x-app-layout>
+        <section class="w-full flex flex-col items-center text-center py-20 bg-white">
 
-    <!-- NAVBAR -->
-    <nav class="w-full bg-white shadow-sm px-8 py-4 flex items-center justify-between">
+            <img src="/images/logo.png" class="w-24 mb-6" alt="Logo">
 
-        <!-- Logo -->
-        <div class="flex items-center space-x-2">
-            <img src="/images/logo2.png" alt="Logo" class="w-8 h-8">
-        </div>
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
+                Autocare Compass
+            </h1>
 
-        <!-- Menu -->
-        <div class="hidden md:flex items-center space-x-6 text-gray-700">
-            <a href="#" class="hover:text-black">Service</a>
-            <a href="#" class="hover:text-black">Solutions</a>
-            <a href="#" class="hover:text-black">Community</a>
-            <a href="#" class="hover:text-black">Contact</a>
-            <a href="#" class="hover:text-black">Help</a>
-        </div>
+            <p class="text-gray-500 text-lg mb-6">
+                Your guide to managing autoimmune conditions
+            </p>
 
-        <!-- Auth Buttons -->
-        <div class="flex items-center space-x-3">
-            @auth
-                @php
-                    $dashboardRoute = auth()->user()?->role === 'admin'
-                        ? route('admin.dashboard')
-                        : route('dashboard');
-                @endphp
-
-                <span class="text-gray-700 font-medium">
-                    Hi, {{ auth()->user()->name }}
-                </span>
-
-                <a href="{{ $dashboardRoute }}"
-                class="px-4 py-1 border rounded-md hover:bg-gray-100">
-                    Dashboard
-                </a>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                            class="px-4 py-1 bg-black text-white rounded-md hover:bg-gray-800">
-                        Logout
-                    </button>
-                </form>
-            @endauth
-
-            @guest
-                <a href="{{ route('login') }}"
-                class="px-4 py-1 border rounded-md hover:bg-gray-100">
-                    Sign in
-                </a>
-
-                <a href="{{ route('register') }}"
-                class="px-4 py-1 bg-black text-white rounded-md hover:bg-gray-800">
-                    Register
-                </a>
-            @endguest
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section class="w-full flex flex-col items-center text-center py-20">
-
-        <!-- Center Logo -->
-        <img src="/images/logo.png" class="w-24 mb-6" alt="Logo">
-
-        <!-- Title -->
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
-            Autocare Compass
-        </h1>
-
-        <!-- Subtitle -->
-        <p class="text-gray-500 text-lg mb-6">
-            Your guide to managing autoimmune conditions
-        </p>
-
-        <!-- Button -->
-        <a href="{{ route('checksurvey') }}"
-           class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800">
-            Explore
-        </a>
-    </section>
-
+            <a href="{{ route('checksurvey') }}"
+            class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800 transition">
+                Explore
+            </a>
+        </section>
+    </x-app-layout>
 </body>
 </html>
