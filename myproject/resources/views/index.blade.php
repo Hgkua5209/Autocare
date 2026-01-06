@@ -56,5 +56,14 @@
         </a>
     </section>
 
+<<<<<<< Updated upstream
+=======
+            <a href="{{ route('services') }}"
+            class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800 transition">
+                Explore
+            </a>
+        </section>
+    </x-app-layout>
+>>>>>>> Stashed changes
 </body>
 </html>
