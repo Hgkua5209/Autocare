@@ -22,9 +22,10 @@ Route::get('/', function () {
     return view('index'); // Changed from 'welcome' to 'index'
 })->name('home');
 
+// User dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -68,11 +69,6 @@ Route::get('/test-controller-show', [MedicalSurveyController::class, 'showSurvey
 Route::get('/test-controller-report', [MedicalSurveyController::class, 'showReport']);
 
 
-// User dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 // Admin dashboard
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
@@ -82,3 +78,53 @@ Route::get('/admin/dashboard', function () {
 Route::get('/services', function () {
     return view('services');
 })->middleware(['auth'])->name('services');
+
+use App\Http\Controllers\FoodSubmissionController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/food/upload', [FoodSubmissionController::class, 'create'])
+        ->name('food.upload');
+
+    Route::post('/food/upload', [FoodSubmissionController::class, 'store'])
+        ->name('food.store');
+
+    Route::get('/my-food-submissions', [FoodSubmissionController::class, 'mySubmissions'])
+        ->name('food.submissions.mine');
+});
+
+
+// food hub controller
+use App\Http\Controllers\FoodController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/food-hub', [FoodController::class, 'index'])->name('food.hub');
+    Route::get('/food/{id}', [FoodController::class, 'show'])->name('food.show');
+
+    Route::post('/food/{id}/like', [FoodController::class, 'like'])->name('food.like');
+    Route::post('/food/{id}/save', [FoodController::class, 'save'])->name('food.save');
+});
+
+
+use App\Http\Controllers\Admin\FoodReviewController;
+use App\Http\Controllers\AdminDashboardController;
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('admin.dashboard');
+
+        Route::get('/food-review', [FoodReviewController::class, 'index'])
+            ->name('admin.food.review');
+
+        Route::get('/food-submissions/{id}', [FoodReviewController::class, 'show'])
+            ->name('admin.food.submissions.show');
+
+        Route::post('/food-review/{id}/approve', [FoodReviewController::class, 'approve'])
+            ->name('admin.food.approve');
+
+        Route::post('/food-review/{id}/reject', [FoodReviewController::class, 'reject'])
+            ->name('admin.food.reject');
+});
+
