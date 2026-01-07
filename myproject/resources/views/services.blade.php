@@ -45,7 +45,10 @@
                     <li>Medication Log</li>
                 </ul>
             </div>
-            <button class="mt-6 border border-gray-400 rounded px-4 py-1 self-center">Track</button>
+            <a href="{{ route('medical.survey') }}"
+            class="mt-6 border border-gray-400 rounded px-4 py-1 self-center hover:bg-white hover:text-black transition-colors duration-200">
+                Track
+            </a>
         </div>
 
         <!-- Support Circle -->
@@ -78,7 +81,7 @@
         <div class="bg-neutral-200 text-black rounded-lg p-6 flex flex-col justify-between md:col-span-2">
             <div class="grid grid-cols-2 gap-6">
                 <div>
-                    <h2 class="text-lg font-semibold mb-2">Recipe Hub</h2>
+                    <h2 class="text-lg font-semibold mb-2">Food Hub</h2>
                     <ul class="text-sm list-disc list-inside space-y-1">
                         <li>Find Recipes</li>
                         <li>Save Favorites</li>
@@ -94,7 +97,10 @@
                     </ul>
                 </div>
             </div>
-            <button class="mt-6 border border-gray-600 rounded px-4 py-1 self-center">View</button>
+            <a href="{{ route('food.hub') }}"
+            class="mt-6 border border-gray-600 rounded px-4 py-1 self-center hover:bg-black hover:text-white transition-colors duration-200">
+                View
+            </a>
         </div>
 
         <!-- Analytics -->

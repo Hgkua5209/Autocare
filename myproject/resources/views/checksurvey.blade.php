@@ -201,6 +201,20 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        /* Feedback styling for validation errors */
+        .is-invalid {
+            border: 2px solid #ff4757 !important; /* Red border */
+            background-color: #fffafb !important; /* Light red tint */
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -239,39 +253,58 @@
             @csrf
 
             <!-- Section 1: Personal Information -->
-            <div class="form-section">
-                <h2 class="section-title">👤 Personal Information</h2>
+        <div class="form-section">
+            <h2 class="section-title">👤 Personal Information</h2>
 
-                <div class="form-group">
-                    <label>Full Name <span class="required">*</span></label>
-                    <input type="text" name="patient_name" value="{{ old('patient_name') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Age <span class="required">*</span></label>
-                    <input type="number" name="age" value="{{ old('age') }}" min="1" max="120" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Gender <span class="required">*</span></label>
-                    <select name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
-                        <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Height (cm) <span class="required">*</span></label>
-                    <input type="number" name="height_cm" value="{{ old('height_cm') }}" min="50" max="250" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Weight (kg) <span class="required">*</span></label>
-                    <input type="number" step="0.1" name="weight_kg" value="{{ old('weight_kg') }}" min="20" max="300" required>
-                </div>
+            <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="patient_name" value="{{ old('patient_name') }}"
+                    class="@error('patient_name') is-invalid @enderror" required>
+                @error('patient_name')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
             </div>
+
+            <div class="form-group">
+                <label>Age <span class="required">*</span></label>
+                <input type="number" name="age" value="{{ old('age') }}" min="1" max="120"
+                    class="@error('age') is-invalid @enderror" required>
+                @error('age')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label>Gender <span class="required">*</span></label>
+                <select name="gender" class="@error('gender') is-invalid @enderror" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                    <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                    <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
+                </select>
+                @error('gender')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label>Height (cm) <span class="required">*</span></label>
+                <input type="number" name="height_cm" value="{{ old('height_cm') }}" min="50" max="250"
+                    class="@error('height_cm') is-invalid @enderror" required>
+                @error('height_cm')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label>Weight (kg) <span class="required">*</span></label>
+                <input type="number" step="0.1" name="weight_kg" value="{{ old('weight_kg') }}" min="20" max="300"
+                    class="@error('weight_kg') is-invalid @enderror" required>
+                @error('weight_kg')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
 
             <!-- Section 2: Symptoms -->
             <div class="form-section">
@@ -520,6 +553,13 @@
             const successAlert = document.getElementById('successAlert');
             const errorAlert = document.getElementById('errorAlert');
             const validationAlert = document.getElementById('validationAlert');
+
+            // Check diet length
+            if (dietText.length < 50) { // Changed from 5 to 50 to match your helper text
+                alert('Please provide more details about your diet (at least 50 characters).');
+                event.preventDefault();
+                return false;
+            }
 
             if (successAlert) {
                 successAlert.style.display = 'block';

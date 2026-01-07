@@ -9,20 +9,19 @@
         <!-- Action Bar -->
         <div class="flex justify-center mb-8">
             <div class="bg-gray-200 rounded-xl px-6 py-4 flex gap-6 shadow-sm">
-                <button class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black">
-                    <span class="bg-gray-300 rounded-lg p-3 mb-1">⬆️</span>
+                <a href="{{ route('food.upload') }}" class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black transition-transform hover:scale-105">
+                    <span class="bg-gray-300 rounded-lg p-3 mb-1">
+                        ⬆️
+                    </span>
                     Upload
-                </button>
+                </a>
 
-                <button class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black">
-                    <span class="bg-gray-300 rounded-lg p-3 mb-1">📖</span>
-                    Menu
-                </button>
-
-                <button class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black">
-                    <span class="bg-gray-300 rounded-lg p-3 mb-1">🔍</span>
-                    Check
-                </button>
+                <a href="{{ url('/my-food-submissions') }}" class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black transition-colors">
+                    <span class="bg-gray-300 rounded-lg p-3 mb-1">
+                        🔍
+                    </span>
+                    Check Food submissions
+                </a>
             </div>
         </div>
 

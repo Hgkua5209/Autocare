@@ -228,6 +228,13 @@
             font-weight: 600;
         }
 
+        @media print {
+            body { background: white !important; padding: 0; }
+            .container { box-shadow: none; border: 1px solid #eee; }
+            .cta-button, .header p { display: none; } /* Hide buttons when printing */
+            .severity-badge { border: 1px solid #000; padding: 2px 5px; }
+        }
+
         .severity-high { background: #ff4757; color: white; }
         .severity-medium { background: #ffa502; color: white; }
         .severity-low { background: #2ed573; color: white; }
@@ -245,51 +252,66 @@
         <div class="patient-info">
             <div class="info-item">
                 <strong>Name</strong>
-                <span>{{ $survey->patient_name }}</span>
+                <span>{{ $survey->patient_name ?? 'No Name provided' }}</span>
             </div>
             <div class="info-item">
                 <strong>Age</strong>
-                <span>{{ $survey->age }}</span>
+                <span>{{ $survey->age ?? 'No Age provided'}}</span>
             </div>
             <div class="info-item">
                 <strong>Gender</strong>
-                <span>{{ $survey->gender }}</span>
+                <span>{{ $survey->gender ?? 'Gender Not specified' }}</span>
             </div>
             <div class="info-item">
                 <strong>Height</strong>
-                <span>{{ $survey->height_cm }}</span>
+                <span>{{ $survey->height_cm ?? 'Height Not specified' }}</span>
             </div>
             <div class="info-item">
                 <strong>Weight</strong>
-                <span>{{ $survey->weight_kg }}</span>
+                <span>{{ $survey->weight_kg ?? 'Weight Not specified' }}</span>
             </div>
             <div class="info-item">
-                <strong>BMI</strong>
-                <span>{{ number_format($survey->bmi, 1) }}</span>
+                <strong>BMI Status</strong>
+                @php
+                    $bmi = $survey->bmi;
+                    $status = $bmi < 18.5 ? 'Underweight' : ($bmi < 25 ? 'Normal' : ($bmi < 30 ? 'Overweight' : 'Obese'));
+                    $color = $bmi >= 18.5 && $bmi < 25 ? 'text-green-500' : 'text-red-500';
+                @endphp
+                <span class="{{ $color }}">{{ $status }}</span>
             </div>
         </div>
 
         <!-- Autoimmune Section -->
         <div class="section">
             <h2 class="section-title">🩺 Autoimmune Analysis</h2>
-            <div class="autoimmune-grid">
-                @foreach($reportData['autoimmuneMatches'] as $condition => $percentage)
-                <div class="autoimmune-item">
-                    <div class="condition">{{ $condition }}</div>
-                    <div class="match">{{ number_format($percentage, 1) }}%</div>
-                    <div class="progress-bar">
-                        <div style="
-                            width: {{ $percentage }}%;
-                            height: 8px;
-                            background: white;
-                            border-radius: 4px;
-                            margin: 10px auto;
-                            max-width: 100%;
-                        "></div>
+                <div class="autoimmune-grid">
+                    @foreach($reportData['autoimmuneMatches'] as $condition => $percentage)
+                    <div class="autoimmune-item">
+                        <div class="condition">{{ $condition }}</div>
+                        <div class="match">{{ number_format($percentage, 1) }}%</div>
+
+                        {{-- Individual Feedback Logic --}}
+                        @php
+                            $matchLevel = $percentage >= 70 ? 'High Match' : ($percentage >= 40 ? 'Moderate Match' : 'Low Match');
+                        @endphp
+                        <span class="text-xs font-bold uppercase tracking-wider" style="background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px;">
+                            {{ $matchLevel }}
+                        </span>
+
+                        <div class="progress-bar">
+                            <div style="
+                                width: {{ $percentage }}%;
+                                height: 8px;
+                                background: white;
+                                border-radius: 4px;
+                                margin: 10px auto;
+                                max-width: 100%;
+                                opacity: {{ $percentage > 0 ? '1' : '0.3' }}; {{-- Visual feedback for zero data --}}
+                            "></div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
-            </div>
         </div>
 
         <!-- Charts Section -->
@@ -345,6 +367,12 @@
                 <!-- Triggers -->
                 <div class="condition-category">
                     <div class="category-title">Potential Triggers</div>
+                    @if(empty($reportData['triggers']))
+                        <p class="text-sm text-gray-500 italic">No specific triggers reported.</p>
+                    @else
+                        @foreach($reportData['triggers'] as $trigger => $data)
+                            @endforeach
+                    @endif
                     @foreach($reportData['triggers'] as $trigger => $data)
                     <div class="symptom-item">
                         <span>{{ $trigger }}</span>
@@ -416,6 +444,10 @@
                 <em>AutoCare Compass can help you</em>
             </p>
             <button class="cta-button" onclick="startJourney()">Begin 2-Week Program</button>
+            <button class="cta-button" style="background: #6c757d; margin-top: 10px;"
+                    onclick="if(confirm('Are you sure? Your current results won\'t be saved unless you print them.')) window.location.href='/checksurvey';">
+                Redo Survey
+            </button>
         </div>
 
         <!-- Footer -->
@@ -543,9 +575,14 @@ const symptomData = {
         });
 
         function startJourney() {
-            alert('Starting your 2-week health journey! You will receive daily tracking reminders.');
-            // In a real app, you would redirect to a program page
-            // window.location.href = '/2-week-program';
+            // Check if user has high risk before starting
+            const risk = "{{ $analytics->getRiskLevel() }}";
+
+            if(risk === 'High') {
+                alert('Notice: Based on your high risk level, we recommend consulting a doctor before starting this 2-week program.');
+            }
+
+            alert('Journey Started! We will track your progress daily.');
         }
 
         // Print functionality

@@ -22,10 +22,17 @@
                 Your guide to managing autoimmune conditions
             </p>
 
-            <a href="{{ route('checksurvey') }}"
-            class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800 transition">
-                Explore
-            </a>
+            @auth
+                <a href="{{ route('checksurvey') }}"
+                class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800 transition inline-block">
+                    Explore
+                </a>
+            @else
+                <a href="{{ route('login') }}"
+                class="mt-4 px-8 py-2 bg-black text-white text-lg rounded-md hover:bg-gray-800 transition inline-block">
+                    Explore
+                </a>
+            @endauth
         </section>
     </x-app-layout>
 </body>
