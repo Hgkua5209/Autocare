@@ -563,7 +563,9 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
+                <a href="{{ route('home') }}" style="text-decoration: none; color: inherit;">
                 <h1>AutoCare<span>Compass</span></h1>
+                </a>
             </div>
             
             <div class="nav-menu">
@@ -571,9 +573,9 @@
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{{ route('medical.survey') }}" class="nav-item">
                     <i class="fas fa-user-md"></i>
-                    <span>Medical Report</span>
+                    <span>Check condition</span>
                 </a>
                 <a href="#" class="nav-item">
                     <i class="fas fa-chart-line"></i>
@@ -581,15 +583,15 @@
                 </a>
                 <a href="#" class="nav-item">
                     <i class="fas fa-pills"></i>
-                    <span>Medication</span>
+                    <span>Treatment Hub</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{{ route('food.hub') }}" class="nav-item">
                     <i class="fas fa-utensils"></i>
-                    <span>Diet Plan</span>
+                    <span>Food Hub</span>
                 </a>
                 <a href="#" class="nav-item">
                     <i class="fas fa-calendar-check"></i>
-                    <span>Appointments</span>
+                          <span>Community</span>
                 </a>
                 <a href="#" class="nav-item">
                     <i class="fas fa-cog"></i>
