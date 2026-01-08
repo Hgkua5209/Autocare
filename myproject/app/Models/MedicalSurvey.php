@@ -33,9 +33,26 @@ class MedicalSurvey extends Model
         'medications',
         'family_history',
         'diagnosis_details',
+        'morning_stiffness',
+        'skin_symptoms',
+        'eye_symptoms',
+        'triggers',
+        'digestive_pattern',
     ];
 
     protected $casts = [
-        'main_symptoms' => 'array',
+         'main_symptoms' => 'array',
+        // ADD THESE:
+        'skin_symptoms' => 'array',
+        'triggers' => 'array',
+        // If you have other numeric fields:
+        'bmi' => 'float',
+        'age' => 'integer',
+        'pain_level' => 'integer',
+        'fatigue_level' => 'integer',
+        'sleep_quality' => 'integer',
+        'stress_level' => 'integer',
+        'water_consumption' => 'integer',
+        'impact_on_daily_life' => 'integer',
     ];
 }

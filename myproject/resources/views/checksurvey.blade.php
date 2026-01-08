@@ -410,7 +410,143 @@
                     </div>
                     <small style="color: #666;">How much do your symptoms interfere with work, household, or social activities?</small>
                 </div>
+                <!-- Find this in your checksurvey.blade.php -->
+
+<!-- ADD THE NEW QUESTIONS RIGHT HERE -->
+<!-- ================================== -->
+<!-- Morning Stiffness Duration -->
+<div class="form-group">
+    <label>Morning Stiffness Duration <span class="required">*</span></label>
+    <select name="morning_stiffness" class="@error('morning_stiffness') is-invalid @enderror" required>
+        <option value="">Select duration</option>
+        <option value="none" {{ old('morning_stiffness') == 'none' ? 'selected' : '' }}>No morning stiffness</option>
+        <option value="less_30min" {{ old('morning_stiffness') == 'less_30min' ? 'selected' : '' }}>Less than 30 minutes</option>
+        <option value="30min_1h" {{ old('morning_stiffness') == '30min_1h' ? 'selected' : '' }}>30 minutes to 1 hour</option>
+        <option value="1_2h" {{ old('morning_stiffness') == '1_2h' ? 'selected' : '' }}>1-2 hours</option>
+        <option value="more_2h" {{ old('morning_stiffness') == 'more_2h' ? 'selected' : '' }}>More than 2 hours</option>
+    </select>
+    @error('morning_stiffness')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+    <small style="color: #666;">How long does joint stiffness last in the morning?</small>
+</div>
+
+<!-- Skin/Mouth Symptoms -->
+<div class="form-group">
+    <label>Specific Skin/Mouth Symptoms (Select all that apply)</label>
+    <div class="checkbox-group">
+        <div class="checkbox-item">
+            <input type="checkbox" name="skin_symptoms[]" value="butterfly_rash"
+                {{ in_array('butterfly_rash', old('skin_symptoms', [])) ? 'checked' : '' }}>
+            <label>Butterfly-shaped face rash</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="skin_symptoms[]" value="mouth_ulcers"
+                {{ in_array('mouth_ulcers', old('skin_symptoms', [])) ? 'checked' : '' }}>
+            <label>Recurrent mouth sores</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="skin_symptoms[]" value="silvery_scales"
+                {{ in_array('silvery_scales', old('skin_symptoms', [])) ? 'checked' : '' }}>
+            <label>Silvery skin scales (elbows/knees)</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="skin_symptoms[]" value="sun_sensitivity"
+                {{ in_array('sun_sensitivity', old('skin_symptoms', [])) ? 'checked' : '' }}>
+            <label>Skin rash worsens with sun</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="skin_symptoms[]" value="none"
+                {{ in_array('none', old('skin_symptoms', [])) ? 'checked' : '' }}>
+            <label>None of these</label>
+        </div>
+    </div>
+    @error('skin_symptoms')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+</div>
+
+<!-- Eye Symptoms -->
+<div class="form-group">
+    <label>Eye Symptoms <span class="required">*</span></label>
+    <select name="eye_symptoms" class="@error('eye_symptoms') is-invalid @enderror" required>
+        <option value="">Select</option>
+        <option value="none" {{ old('eye_symptoms') == 'none' ? 'selected' : '' }}>No eye symptoms</option>
+        <option value="dry_eyes" {{ old('eye_symptoms') == 'dry_eyes' ? 'selected' : '' }}>Dry/gritty eyes</option>
+        <option value="red_painful" {{ old('eye_symptoms') == 'red_painful' ? 'selected' : '' }}>Red/painful eyes</option>
+        <option value="vision_changes" {{ old('eye_symptoms') == 'vision_changes' ? 'selected' : '' }}>Vision changes/blurriness</option>
+        <option value="uveitis" {{ old('eye_symptoms') == 'uveitis' ? 'selected' : '' }}>Uveitis (diagnosed)</option>
+    </select>
+    @error('eye_symptoms')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+    <small style="color: #666;">Dry eyes = Sjögren's; Uveitis = AS/IBD</small>
+</div>
+
+<!-- Trigger Identification -->
+<div class="form-group">
+    <label>What triggers symptom flares? (Select top 2)</label>
+    <div class="checkbox-group">
+        <div class="checkbox-item">
+            <input type="checkbox" name="triggers[]" value="stress"
+                {{ in_array('stress', old('triggers', [])) ? 'checked' : '' }}>
+            <label>Stress</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="triggers[]" value="food"
+                {{ in_array('food', old('triggers', [])) ? 'checked' : '' }}>
+            <label>Specific foods</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="triggers[]" value="infection"
+                {{ in_array('infection', old('triggers', [])) ? 'checked' : '' }}>
+            <label>Infections/colds</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="triggers[]" value="weather"
+                {{ in_array('weather', old('triggers', [])) ? 'checked' : '' }}>
+            <label>Cold/damp weather</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="triggers[]" value="hormonal"
+                {{ in_array('hormonal', old('triggers', [])) ? 'checked' : '' }}>
+            <label>Menstrual cycle</label>
+        </div>
+        <div class="checkbox-item">
+            <input type="checkbox" name="triggers[]" value="none"
+                {{ in_array('none', old('triggers', [])) ? 'checked' : '' }}>
+            <label>None identified</label>
+        </div>
+    </div>
+    @error('triggers')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+    <small style="color: #666;">Select up to 2 main triggers</small>
+</div>
+
+<!-- Digestive Pattern -->
+<div class="form-group">
+    <label>Digestive Issues Pattern <span class="required">*</span></label>
+    <select name="digestive_pattern" class="@error('digestive_pattern') is-invalid @enderror" required>
+        <option value="">Select pattern</option>
+        <option value="none" {{ old('digestive_pattern') == 'none' ? 'selected' : '' }}>No digestive issues</option>
+        <option value="pain_relief" {{ old('digestive_pattern') == 'pain_relief' ? 'selected' : '' }}>Pain relieved after bowel movement</option>
+        <option value="blood_stool" {{ old('digestive_pattern') == 'blood_stool' ? 'selected' : '' }}>Blood/mucus in stool</option>
+        <option value="worse_food" {{ old('digestive_pattern') == 'worse_food' ? 'selected' : '' }}>Worse immediately after eating</option>
+        <option value="bloating" {{ old('digestive_pattern') == 'bloating' ? 'selected' : '' }}>Mainly bloating/gas</option>
+    </select>
+    @error('digestive_pattern')
+        <span class="error-message">{{ $message }}</span>
+    @enderror
+    <small style="color: #666;">IBD = blood in stool; IBS = pain relief after BM</small>
+</div>
+<!-- ================================== -->
+<!-- END OF NEW QUESTIONS -->
+<!-- The next line should be the closing </div> for Section 2 -->
+ <!-- This closes the <div class="form-section"> for Symptoms Assessment -->
             </div>
+
+            
 
             <!-- Section 3: Lifestyle & Diet -->
             <div class="form-section">
@@ -547,51 +683,109 @@
         </form>
     </div>
 
-    <script>
-        // Show alerts
-        document.addEventListener('DOMContentLoaded', function() {
-            const successAlert = document.getElementById('successAlert');
-            const errorAlert = document.getElementById('errorAlert');
-            const validationAlert = document.getElementById('validationAlert');
+<script>
+    // Show alerts
+    document.addEventListener('DOMContentLoaded', function() {
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+        const validationAlert = document.getElementById('validationAlert');
 
-            // Check diet length
-            if (dietText.length < 50) { // Changed from 5 to 50 to match your helper text
-                alert('Please provide more details about your diet (at least 50 characters).');
+        // Show alerts if they exist
+        if (successAlert) {
+            successAlert.style.display = 'block';
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+            }, 5000);
+        }
+
+        if (errorAlert || validationAlert) {
+            if (errorAlert) errorAlert.style.display = 'block';
+            if (validationAlert) validationAlert.style.display = 'block';
+        }
+
+        // Form validation
+        const form = document.getElementById('medicalSurveyForm');
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            
+
+
+            // 2. Check if at least one symptom is selected
+            const symptomCheckboxes = document.querySelectorAll('input[name="main_symptoms[]"]:checked');
+            if (symptomCheckboxes.length === 0) {
+                alert('Please select at least one symptom.');
+                isValid = false;
+            }
+
+            // 3. Validate triggers (max 2)
+            const triggerCheckboxes = document.querySelectorAll('input[name="triggers[]"]:checked');
+            if (triggerCheckboxes.length > 2) {
+                alert('Please select maximum 2 triggers only.');
+                isValid = false;
+            }
+
+            // 4. Validate at least one trigger OR "none" is selected
+            if (triggerCheckboxes.length === 0) {
+                alert('Please select at least one trigger or choose "None identified".');
+                isValid = false;
+            }
+
+            // 5. Validate skin symptoms (at least one OR "none" selected)
+            const skinCheckboxes = document.querySelectorAll('input[name="skin_symptoms[]"]:checked');
+            if (skinCheckboxes.length === 0) {
+                alert('Please select at least one skin symptom or choose "None of these".');
+                isValid = false;
+            }
+
+            // 6. Validate morning stiffness is selected
+            const morningStiffness = document.querySelector('[name="morning_stiffness"]').value;
+            if (!morningStiffness) {
+                alert('Please select morning stiffness duration.');
+                isValid = false;
+            }
+
+            // 7. Validate eye symptoms is selected
+            const eyeSymptoms = document.querySelector('[name="eye_symptoms"]').value;
+            if (!eyeSymptoms) {
+                alert('Please select eye symptoms.');
+                isValid = false;
+            }
+
+            // 8. Validate digestive pattern is selected
+            const digestivePattern = document.querySelector('[name="digestive_pattern"]').value;
+            if (!digestivePattern) {
+                alert('Please select digestive pattern.');
+                isValid = false;
+            }
+
+            // If any validation failed, prevent form submission
+            if (!isValid) {
                 event.preventDefault();
                 return false;
             }
 
-            if (successAlert) {
-                successAlert.style.display = 'block';
-                setTimeout(() => {
-                    successAlert.style.display = 'none';
-                }, 5000);
-            }
-
-            if (errorAlert || validationAlert) {
-                if (errorAlert) errorAlert.style.display = 'block';
-                if (validationAlert) validationAlert.style.display = 'block';
-            }
-
-            // Form validation
-            const form = document.getElementById('medicalSurveyForm');
-            form.addEventListener('submit', function(event) {
-                const dietText = document.querySelector('[name="diet_description"]').value;
-                if (dietText.length < 5) {
-                    alert('Please provide more details about your diet (at least 50 characters).');
+            // If "none" is selected with other skin symptoms, confirm with user
+            const noneSkinSelected = Array.from(skinCheckboxes).some(cb => cb.value === 'none');
+            if (noneSkinSelected && skinCheckboxes.length > 1) {
+                if (!confirm('You selected "None of these" with other skin symptoms. Continue?')) {
                     event.preventDefault();
                     return false;
                 }
+            }
 
-                // Check if at least one symptom is selected
-                const checkboxes = document.querySelectorAll('input[name="main_symptoms[]"]:checked');
-                if (checkboxes.length === 0) {
-                    alert('Please select at least one symptom.');
+            // If "none" is selected with other triggers, confirm with user
+            const noneTrigger = Array.from(triggerCheckboxes).some(cb => cb.value === 'none');
+            if (noneTrigger && triggerCheckboxes.length > 1) {
+                if (!confirm('You selected "None identified" with other triggers. Continue?')) {
                     event.preventDefault();
                     return false;
                 }
-            });
+            }
+
+            // All validations passed
+            return true;
         });
-    </script>
+    });
+</script>
 </body>
 </html>

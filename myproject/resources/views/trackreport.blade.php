@@ -127,6 +127,47 @@
             text-align: center;
         }
 
+/* Keep EXACT original style for true autoimmune */
+.autoimmune-item-original {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* New blue style for auto-inflammatory */
+.autoimmune-item-blue {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* Keep the badge styles */
+.disease-type-badge {
+    display: block;
+    font-size: 0.7em;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.match-level-badge {
+    display: inline-block;
+    font-size: 0.8em;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 3px 12px;
+    border-radius: 12px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
         .condition {
             font-size: 1.1em;
             margin-bottom: 10px;
@@ -280,39 +321,115 @@
                 <span class="{{ $color }}">{{ $status }}</span>
             </div>
         </div>
-
-        <!-- Autoimmune Section -->
-        <div class="section">
-            <h2 class="section-title">🩺 Autoimmune Analysis</h2>
-                <div class="autoimmune-grid">
-                    @foreach($reportData['autoimmuneMatches'] as $condition => $percentage)
-                    <div class="autoimmune-item">
-                        <div class="condition">{{ $condition }}</div>
-                        <div class="match">{{ number_format($percentage, 1) }}%</div>
-
-                        {{-- Individual Feedback Logic --}}
-                        @php
-                            $matchLevel = $percentage >= 70 ? 'High Match' : ($percentage >= 40 ? 'Moderate Match' : 'Low Match');
-                        @endphp
-                        <span class="text-xs font-bold uppercase tracking-wider" style="background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px;">
-                            {{ $matchLevel }}
-                        </span>
-
-                        <div class="progress-bar">
-                            <div style="
-                                width: {{ $percentage }}%;
-                                height: 8px;
-                                background: white;
-                                border-radius: 4px;
-                                margin: 10px auto;
-                                max-width: 100%;
-                                opacity: {{ $percentage > 0 ? '1' : '0.3' }}; {{-- Visual feedback for zero data --}}
-                            "></div>
-                        </div>
-                    </div>
-                    @endforeach
+<!-- Autoimmune Section -->
+<div class="section">
+    <h2 class="section-title">🩺 Autoimmune Analysis</h2>
+    <div class="autoimmune-grid">
+        @foreach($reportData['autoimmuneMatches'] as $condition => $percentage)
+            @php
+                // Define which conditions are true autoimmune (keep original red/pink style)
+                $trueAutoimmune = [
+                    'Rheumatoid Arthritis (RA)',
+                    'Lupus (SLE)', 
+                    'Sjögren\'s Syndrome',
+                    'Celiac Disease'
+                ];
+                
+                // Define which are auto-inflammatory (use new blue style)
+                $autoInflammatory = [
+                    'Psoriatic Arthritis',
+                    'Ankylosing Spondylitis',
+                    'Inflammatory Bowel Disease'
+                ];
+                
+                // Determine the class based on condition
+                if (in_array($condition, $trueAutoimmune)) {
+                    // Keep original red/pink style
+                    $colorClass = 'autoimmune-item-original';
+                    $typeLabel = 'Autoimmune';
+                } elseif (in_array($condition, $autoInflammatory)) {
+                    // Use new blue style
+                    $colorClass = 'autoimmune-item-blue';
+                    $typeLabel = 'Immune-Mediated';
+                } else {
+                    $colorClass = 'autoimmune-item-other';
+                    $typeLabel = 'Other';
+                }
+                
+                $matchLevel = $percentage >= 70 ? 'High Match' : ($percentage >= 40 ? 'Moderate Match' : 'Low Match');
+            @endphp
+            
+            <div class="autoimmune-item {{ $colorClass }}">
+                <div class="condition">
+                    {{ $condition }}
+                    <span class="disease-type-badge">{{ $typeLabel }}</span>
                 </div>
+                <div class="match">{{ number_format($percentage, 1) }}%</div>
+                
+                <span class="match-level-badge">
+                    {{ $matchLevel }}
+                </span>
+                
+                <div class="progress-bar">
+                    <div style="
+                        width: {{ $percentage }}%;
+                        height: 8px;
+                        background: white;
+                        border-radius: 4px;
+                        margin: 10px auto;
+                        max-width: 100%;
+                        opacity: {{ $percentage > 0 ? '1' : '0.3' }};
+                    "></div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    
+    <!-- Legend -->
+    <div style="margin-top: 30px; text-align: center;">
+        <div style="display: inline-block; background: #f8f9fa; padding: 15px 25px; border-radius: 10px;">
+            <strong>Color Legend:</strong>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 4px; margin-right: 8px;"></div>
+                    <span>🔴 True Autoimmune (4 conditions)</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 4px; margin-right: 8px;"></div>
+                    <span>🔵 Auto-inflammatory/Immune-Mediated (3 conditions)</span>
+                </div>
+            </div>
         </div>
+    </div>
+
+    
+        <!-- Medical Disclaimer -->
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px 20px; border-radius: 8px; margin-top: 15px;">
+            <div style="display: flex; align-items: flex-start;">
+                <div style="font-size: 1.2em; margin-right: 10px;">⚠️</div>
+                <div>
+                    <strong style="color: #856404;">Important Medical Disclaimer:</strong>
+                    <p style="margin: 8px 0 0 0; color: #856404; font-size: 0.95em;">
+                        These match percentages represent <strong>probability estimates only</strong> based on your survey responses. 
+                        This is <strong>NOT a medical diagnosis</strong>. Autoimmune conditions require professional evaluation 
+                        including blood tests, imaging, and physical examination by a qualified healthcare provider.
+                    </p>
+                    <p style="margin: 8px 0 0 0; color: #856404; font-size: 0.95em;">
+                        <strong>Please consult with a rheumatologist or your primary care physician</strong> for proper diagnosis 
+                        and treatment. Do not make medical decisions based solely on this report.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div style="text-align: center; margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+            <p style="color: white; margin: 0; font-weight: 600; font-size: 1.1em;">
+                📋 <strong>Next Step:</strong> Share these results with your doctor for professional evaluation
+            </p>
+        </div>
+
+</div>
 
         <!-- Charts Section -->
         <div class="section">

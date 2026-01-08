@@ -56,6 +56,13 @@ public function store(Request $request)
             'medications' => 'nullable|string|max:1000',
             'family_history' => 'nullable|string|max:1000',
             'diagnosis_details' => 'nullable|string|max:2000',
+
+            // New fields
+            'morning_stiffness' => 'required|string',
+            'skin_symptoms' => 'nullable|array',
+            'eye_symptoms' => 'required|string',
+            'triggers' => 'nullable|array|max:2', // Max 2 triggers
+            'digestive_pattern' => 'required|string',
         ]);
 
         // Calculate BMI
@@ -65,6 +72,23 @@ public function store(Request $request)
         // Convert arrays to JSON
         if (isset($validated['main_symptoms'])) {
             $validated['main_symptoms'] = json_encode($validated['main_symptoms']);
+        }
+                // Convert NEW arrays to JSON - ADD THIS
+        if (isset($validated['skin_symptoms'])) {
+            $validated['skin_symptoms'] = json_encode($validated['skin_symptoms']);
+        }
+
+        if (isset($validated['triggers'])) {
+            $validated['triggers'] = json_encode($validated['triggers']);
+        }
+
+        // Ensure empty arrays become JSON empty arrays
+        if (!isset($validated['skin_symptoms'])) {
+            $validated['skin_symptoms'] = json_encode([]);
+        }
+
+        if (!isset($validated['triggers'])) {
+            $validated['triggers'] = json_encode([]);
         }
 
         // Save to database
