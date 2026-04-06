@@ -65,7 +65,7 @@
                     src="{{ asset('storage/' . $imagePath) }}"
                     alt="{{ $food->name }}"
                     class="w-full max-h-[500px] object-cover"
-                    onerror="this.parentElement.innerHTML='<div class=\"p-10 text-center text-gray-400\">Image not found</div>'"
+                    onerror="this.outerHTML='<div class=\'p-10 text-center text-gray-400\'>Image not found</div>'"
                 >
             @else
                 <div class="h-64 flex items-center justify-center text-gray-400 italic">
