@@ -9,7 +9,7 @@ use App\Http\Controllers\FoodSubmissionController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\Admin\FoodReviewController;
 use App\Http\Controllers\AdminDashboardController;
-
+use App\Http\Controllers\TreatmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +82,13 @@ Route::get('/debug-dashboard', function() {
         echo "<p>Line: " . $e->getLine() . "</p>";
     }
 });
+
+// Treatment
+Route::get('/treatment', [TreatmentController::class, 'index'])->name('treatment');
+Route::get('/treatment/create', function () {
+    return view('treatment.create');
+})->name('treatment.create');
+Route::post('/treatment/store', [TreatmentController::class, 'store'])->name('treatment.store');
 
 // Medical Survey Routes (accessible without auth if you want public submissions)
 Route::get('/checksurvey', [MedicalSurveyController::class, 'showSurvey'])->name('checksurvey');

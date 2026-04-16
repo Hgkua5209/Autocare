@@ -1,6 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+@extends('layouts.app')
+
+@section('content')
+
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard | AutoCare Compass</title>
@@ -37,97 +40,6 @@
         .dashboard-container {
             display: flex;
             min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            z-index: 100;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .logo {
-            padding: 25px 20px;
-            border-bottom: 1px solid var(--gray-light);
-            text-align: center;
-        }
-
-        .logo h1 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .logo span {
-            color: var(--secondary);
-        }
-
-        .nav-menu {
-            padding: 20px 0;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 25px;
-            color: var(--gray);
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 4px solid transparent;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: #f1f5ff;
-            color: var(--primary);
-            border-left-color: var(--primary);
-        }
-
-        .nav-item i {
-            width: 24px;
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-
-        .user-profile {
-            padding: 20px;
-            border-top: 1px solid var(--gray-light);
-            display: flex;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-
-        .user-info h4 {
-            font-size: 0.95rem;
-            margin-bottom: 3px;
-        }
-
-        .user-info p {
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 260px;
-            padding: 20px;
         }
 
         .top-bar {
@@ -557,61 +469,10 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo">
-                <a href="{{ route('home') }}" style="text-decoration: none; color: inherit;">
-                <h1>AutoCare<span>Compass</span></h1>
-                </a>
-            </div>
-            
-            <div class="nav-menu">
-                <a href="#" class="nav-item active">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{{ route('medical.survey') }}" class="nav-item">
-                    <i class="fas fa-user-md"></i>
-                    <span>Check condition</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Health Trends</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-pills"></i>
-                    <span>Treatment Hub</span>
-                </a>
-                <a href="{{ route('food.hub') }}" class="nav-item">
-                    <i class="fas fa-utensils"></i>
-                    <span>Food Hub</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-calendar-check"></i>
-                          <span>Community</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
-            </div>
-            
-            <div class="user-profile">
-                <div class="user-avatar">
-                    {{ substr($survey->patient_name ?? 'P', 0, 1) }}
-                </div>
-                <div class="user-info">
-                    <h4>{{ $survey->patient_name ?? 'Patient' }}</h4>
-                    <p>Member since {{ \Carbon\Carbon::parse($survey->created_at ?? now())->format('M Y') }}</p>
-                </div>
-            </div>
-        </div>
+
+
 
         <!-- Main Content -->
-        <div class="main-content">
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="page-title">
@@ -838,7 +699,7 @@
                     <i class="fas fa-exclamation-triangle"></i> For medical emergencies, contact your healthcare provider immediately.
                 </p>
             </div>
-        </div>
+
     </div>
 
     <script>
@@ -938,5 +799,5 @@
             sidebar.classList.toggle('collapsed');
         }
     </script>
-</body>
-</html>
+
+@endsection

@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
+
+@section('content')
     <!-- test -->
-<head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Survey - AutoCare Compass</title>
@@ -12,16 +13,20 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+.page-wrapper {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px 0; /* 🔥 BUANG kiri kanan */
+}
 
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+.main-content {
+    padding: 10px 20px 20px !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 900px;
+    margin: 40px auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -216,8 +221,7 @@
             display: block;
         }
     </style>
-</head>
-<body>
+
 
     <div class="container">
         <div class="header">
@@ -683,6 +687,7 @@
         </form>
     </div>
 
+
 <script>
     // Show alerts
     document.addEventListener('DOMContentLoaded', function() {
@@ -787,5 +792,5 @@
         });
     });
 </script>
-</body>
-</html>
+
+@endsection
