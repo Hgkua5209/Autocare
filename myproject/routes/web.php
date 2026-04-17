@@ -10,6 +10,7 @@ use App\Http\Controllers\FoodController;
 use App\Http\Controllers\Admin\FoodReviewController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\TreatmentController;
+use App\Http\Controllers\CommunityController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +83,14 @@ Route::get('/debug-dashboard', function() {
         echo "<p>Line: " . $e->getLine() . "</p>";
     }
 });
+
+// Community
+Route::delete('/post/{id}', [CommunityController::class, 'destroy'])->name('post.delete');
+Route::get('/community', [CommunityController::class, 'index'])->name('community');
+Route::post('/community/store', [CommunityController::class, 'store'])->name('community.store');
+Route::post('/like/{id}', [CommunityController::class, 'like'])->name('like');
+Route::post('/comment/{postId}', [CommunityController::class, 'comment'])->name('comment');
+Route::post('/save/{id}', [CommunityController::class, 'save'])->name('save');
 
 // Treatment
 Route::get('/treatment', [TreatmentController::class, 'index'])->name('treatment');
