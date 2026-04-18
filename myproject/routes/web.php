@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\FoodReviewController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\CommunityController;
+use Illuminate\Support\Facades\Password;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,29 +43,29 @@ Route::get('/test-controller-report', [MedicalSurveyController::class, 'showRepo
 // Debug route (only one instance)
 Route::get('/debug-dashboard', function() {
     $survey = \App\Models\MedicalSurvey::latest()->first();
-    
+
     if (!$survey) {
         return "No survey found. Please complete a survey first at <a href='/checksurvey'>/checksurvey</a>";
     }
-    
+
     // Debug the survey
     echo "<h2>Survey Data:</h2>";
     echo "<pre>";
     print_r($survey->toArray());
     echo "</pre>";
-    
+
     // Create analytics
     $analytics = new \App\Services\MedicalAnalytics($survey);
-    
+
     echo "<h2>Analytics Data:</h2>";
     echo "<pre>";
     echo "Risk Level: " . $analytics->getRiskLevel() . "\n";
     echo "Analytics class: " . get_class($analytics) . "\n";
     echo "</pre>";
-    
+
     // Test if variables are passed correctly
     echo "<h2>Testing View:</h2>";
-    
+
     try {
         return view('dashboard', [
             'survey' => $survey,
@@ -107,39 +108,39 @@ Route::get('/report', [MedicalSurveyController::class, 'showReport'])->name('med
 
 // Authentication Required Routes
 Route::middleware(['auth'])->group(function () {
-    
+
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // Dashboard Routes
 Route::get('/dashboard', [DashboardController::class, 'smartDashboard'])
     ->middleware(['auth'])
     ->name('dashboard');
-    
+
     // Medical Dashboard
     Route::get('/medical-dashboard', [DashboardController::class, 'showLatest'])
         ->name('medical.dashboard');
-    
+
     Route::get('/medical-dashboard/{id}', [DashboardController::class, 'show'])
         ->name('medical.dashboard.show');
-    
+
     // Services Page
     Route::get('/services', function () {
         return view('services');
     })->name('services');
-    
+
     // Food Submission Routes
     Route::get('/food/upload', [FoodSubmissionController::class, 'create'])
         ->name('food.upload');
-    
+
     Route::post('/food/upload', [FoodSubmissionController::class, 'store'])
         ->name('food.store');
-    
+
     Route::get('/my-food-submissions', [FoodSubmissionController::class, 'mySubmissions'])
         ->name('food.submissions.mine');
-    
+
     // Food Hub Routes
     Route::get('/food-hub', [FoodController::class, 'index'])->name('food.hub');
     Route::get('/food/{id}', [FoodController::class, 'show'])->name('food.show');
@@ -149,24 +150,40 @@ Route::get('/dashboard', [DashboardController::class, 'smartDashboard'])
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    
+
     // Admin Dashboard - Single definition
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
-    
+
     // Food Review Routes
     Route::get('/food-review', [FoodReviewController::class, 'index'])
         ->name('admin.food.review');
-    
+
     Route::get('/food-submissions/{id}', [FoodReviewController::class, 'show'])
         ->name('admin.food.submissions.show');
-    
+
     Route::post('/food-review/{id}/approve', [FoodReviewController::class, 'approve'])
         ->name('admin.food.approve');
-    
+
     Route::post('/food-review/{id}/reject', [FoodReviewController::class, 'reject'])
         ->name('admin.food.reject');
 });
+
+    // Show the link request form
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    // Handle the email submission
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    // Show the reset password form
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    // Handle the password update
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.update');
 
 // Authentication Routes (from auth.php)
 require __DIR__.'/auth.php';

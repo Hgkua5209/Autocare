@@ -7,7 +7,7 @@
         </h1>
     </a>
 </div>
-    
+
     <div class="nav-menu">
         <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <i class="fas fa-tachometer-alt"></i>
@@ -43,6 +43,15 @@
             <i class="fas fa-cog"></i>
             <span>Settings</span>
         </a>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="nav-item" style="color: #ef4444; border: none; background: none; width: 100%; cursor: pointer; display: flex; align-items: center;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span style="margin-left: 10px; font-weight: 600;">Logout</span>
+            </button>
+        </form>
+
     </div>
 
     <div class="user-profile">

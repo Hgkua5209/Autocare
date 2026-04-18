@@ -20,12 +20,29 @@
           <i class="ri-menu-4-line"></i>
         </div>
       </div>
-      <ul class="nav__links" id="nav-links">
-        <li><a href="#">HOME</a></li>
-        <li><a href="#">SERVICE</a></li>
-        <li><a href="{{ route('register') }}">REGISTER</a></li>
-        <li><a href="{{ route('login') }}">LOG IN</a></li>
-      </ul>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">SERVICE</a></li>
+
+            @guest
+                <li><a href="{{ route('register') }}">REGISTER</a></li>
+                <li><a href="{{ route('login') }}">LOG IN</a></li>
+            @endguest
+
+            @auth
+                <li>
+                    <a href="{{ route('dashboard') }}" class="font-bold text-primary">
+                        <i class="ri-user-line"></i> {{ Auth::user()->name }}
+                    </a>
+                </li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="font-medium text-red-500">LOGOUT</button>
+                    </form>
+                </li>
+            @endauth
+        </ul>
     </nav>
 
     <header>
@@ -39,7 +56,11 @@
 Monitor your condition, track progress, and discover diet plans built specifically for autoimmune wellness.
         </p>
         <div class="header__btn">
-          <button onclick="window.location.href='{{ route('login') }}'">Explore</button>
+            @auth
+                <button onclick="window.location.href='{{ route('dashboard') }}'">Explore Dashboard</button>
+            @else
+                <button onclick="window.location.href='{{ route('login') }}'">Explore</button>
+            @endauth
         </div>
         <ul class="header__socials">
           <li>
@@ -351,7 +372,7 @@ header {
   .header__socials {
     justify-content: flex-start;
   }
-  
+
 }
   </style>
 </html>
