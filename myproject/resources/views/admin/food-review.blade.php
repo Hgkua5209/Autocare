@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <div class="max-w-6xl mx-auto py-10">
 
         <h1 class="text-2xl font-bold mb-6">Food Submissions Review</h1>
@@ -55,4 +57,4 @@
             @endforeach
 
     </div>
-</x-app-layout>
+@endsection

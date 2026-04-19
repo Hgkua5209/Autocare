@@ -34,7 +34,7 @@
             <span>Food Hub</span>
         </a>
 
-        <a href="#" class="nav-item">
+        <a href="{{ route('community') }}" class="nav-item">
             <i class="fas fa-calendar-check"></i>
             <span>Community</span>
         </a>

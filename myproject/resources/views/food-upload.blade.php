@@ -1,9 +1,15 @@
-<x-app-layout>
-    <div class="max-w-4xl mx-auto py-10">
+@extends('layouts.app')
 
-        <h1 class="text-2xl font-bold mb-6">Upload Food for Review</h1>
+@section('content')
+    <a href="{{ route('food.hub') }}" class="back-btn">← Back</a>
+    <div class="max-w-4xl mx-auto pt-4 pb-10">
 
-        <p class="text-sm text-gray-600 mb-6">
+<div class="page-header">
+
+    <h1 class="page-title">Upload Food for Review</h1>
+</div>
+
+        <p class="text-sm text-white-600 mb-6">
             All submissions must include credible research evidence.
             Admin approval is required before public listing.
         </p>
@@ -67,20 +73,20 @@
                 @error('image') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-        <!-- Food Image or Video Upload TESTING
+        {{-- Food Image or Video Upload TESTING
                 <div>
                     <label class="block text-sm font-medium mb-1 text-gray-700">Food Image or Video</label>
                     <input
                         type="file"
                         name="image"
-                        {{-- Updated to accept images (including gifs) and videos --}}
+                        Updated to accept images (including gifs) and videos
                         accept="image/*,video/*"
                         class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500"
                         required
                     >
                     <p class="text-xs text-gray-500 mt-1">Supported: JPG, PNG, WEBP, GIF, MP4, MOV (Max 20MB)</p>
                 </div>
-        -->
+        --}}
                 <!-- Autoimmune Safety -->
         <div class="bg-white p-6 rounded-xl shadow space-y-4">
                 <h3 class="font-semibold">Autoimmune Safety</h3>
@@ -137,10 +143,117 @@
                     placeholder="Brief summary explaining autoimmune safety">{{ old('research_summary') }}</textarea>
             </div>
 
-            <button class="bg-black text-white px-6 py-2 rounded">
+            <button class="submit-btn">
                 Submit for Review
             </button>
 
         </form>
     </div>
-</x-app-layout>
+
+    <style>
+      /* 🌫️ BACKGROUND PAGE (SOFT GREY, NOT BLACK) */
+body {
+    background: #3c3c3d; /* dark grey smooth */
+    color: #ffffff;
+}
+
+
+/* 🧾 CARD KEKAL PUTIH */
+.bg-white {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #e5e7eb;
+}
+
+/* ✨ SHADOW BAGI CARD TIMBUL SIKIT */
+.shadow {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+}
+
+/* 🧠 INPUT CLEAN (NOT DARK) */
+input,
+textarea,
+select {
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #111827 !important;
+}
+
+/* focus effect */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #6366f1 !important;
+    outline: none;
+}
+
+/* 🔴 RESEARCH BOX (MASIH ADA STYLE) */
+.bg-red-50 {
+    background: #fff1f2 !important;
+    border: 1px solid #fecaca !important;
+}
+
+/* BUTTON KEKAL HITAM */
+button {
+    background: #000;
+    color: #fff;
+}
+
+button:hover {
+    background: #111;
+}
+.back-btn {
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111;
+    border: 1px solid #e5e7eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-btn:hover {
+    background: #f3f4f6;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+/* 🎯 TITLE CENTER */
+.header-title {
+    text-align: center;
+}
+
+
+/* hover */
+.back-btn:hover {
+    background: #f3f4f6;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111;
+    border: 1px solid #e5e7eb;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* hover effect sama vibe */
+.submit-btn:hover {
+    background: #f3f4f6;
+}
+    </style>
+@endsection

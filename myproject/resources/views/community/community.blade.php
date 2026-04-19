@@ -169,7 +169,7 @@
                     </button>
 
                     <!-- COMMENT -->
-                    <button type="button" class="action-btn" onclick="toggleComment({{ $post->post_id }})">
+                    <button type="button" class="action-btn" onclick="toggleComment('my-{{ $post->post_id }}')">
                         <span class="material-symbols-outlined">chat_bubble</span>
                         {{ $post->comments->count() }}
                     </button>
@@ -203,7 +203,7 @@
             </div>
 
             <!-- COMMENT BOX -->
-            <div id="commentBox-{{ $post->post_id }}" class="comment-box" style="display:none;">
+            <div id="commentBox-my-{{ $post->post_id }}" class="comment-box" style="display:none;">
 
                 {{-- LIST COMMENT --}}
                 @foreach($post->comments as $c)
@@ -354,14 +354,11 @@ function showTab(tab) {
 }
 
 function toggleComment(id) {
-    let el = document.getElementById('commentBox-' + id);
-    el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
+    let box = document.getElementById('commentBox-' + id);
 
-function toggleComment(postId) {
-    let box = document.getElementById('commentBox-' + postId);
+    if (!box) return;
 
-    if (box.style.display === 'none') {
+    if (box.style.display === 'none' || box.style.display === '') {
         box.style.display = 'block';
     } else {
         box.style.display = 'none';
@@ -399,7 +396,32 @@ function toggleComment(postId) {
     margin: 0;
     width: 100%;
 }
+.comment-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
+/* bagi input ambil full space */
+.comment-input {
+    flex: 1;
+}
+.comment-send {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+/* hover effect */
+.comment-send:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
 .post-input {
     width: 100%;
     border-radius: 16px; /* ni buat bulat smooth */
@@ -587,11 +609,6 @@ function toggleComment(postId) {
     box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
-.comment-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
 
 .comment-btn {
     background: #667eea;

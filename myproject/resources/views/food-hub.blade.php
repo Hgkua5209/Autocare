@@ -1,29 +1,34 @@
-<x-app-layout>
-    <div class="max-w-7xl mx-auto px-6 py-10">
+@extends('layouts.app')
+
+@section('content')
+    <div class="max-w-7xl mx-auto px-6 py-5">
 
         <!-- Page Title -->
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">
-            Food Hub
-        </h1>
+<div class="flex items-center justify-between mb-8">
 
-        <!-- Action Bar -->
-        <div class="flex justify-center mb-8">
-            <div class="bg-gray-200 rounded-xl px-6 py-4 flex gap-6 shadow-sm">
-                <a href="{{ route('food.upload') }}" class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black transition-transform hover:scale-105">
-                    <span class="bg-gray-300 rounded-lg p-3 mb-1">
-                        ⬆️
-                    </span>
-                    Upload
-                </a>
+    <!-- Title -->
+    <h1 class="text-3xl font-bold text-gray-800">
+        Food Hub
+    </h1>
 
-                <a href="{{ url('/my-food-submissions') }}" class="flex flex-col items-center text-sm font-medium text-gray-700 hover:text-black transition-colors">
-                    <span class="bg-gray-300 rounded-lg p-3 mb-1">
-                        🔍
-                    </span>
-                    Check Food submissions
-                </a>
-            </div>
-        </div>
+    <!-- Buttons -->
+    <div class="flex gap-3">
+
+        <!-- Approval (first) -->
+        <a href="{{ url('/my-food-submissions') }}"
+           class="btn-gradient-outline">
+            Approval
+        </a>
+
+        <!-- Upload -->
+        <a href="{{ route('food.upload') }}"
+           class="btn-gradient">
+            + Upload
+        </a>
+
+    </div>
+
+</div>
 
         <!-- Recipes Tabs -->
         <div class="mb-6">
@@ -57,13 +62,12 @@
             <div class="mb-10">
                 <h3 class="text-lg font-semibold mb-4">Meals of the Day</h3>
 
-                <div class="bg-white rounded-xl shadow flex overflow-hidden">
+                <div class="meal-card">
                     <!-- Image placeholder -->
                     <div class="w-1/3">
-                        <img
+                        <img 
                             src="{{ asset('storage/' . $mealOfDay->data['image']) }}"
-                            alt="{{ $mealOfDay->name }}"
-                            class="w-full h-full object-cover"
+                            class="w-full h-52 object-cover rounded-xl mb-4 hover:scale-105 transition"
                         >
                     </div>
 
@@ -113,11 +117,13 @@
             @foreach ($foods as $food)
                 <div class="rounded-2xl p-6 shadow {{ $loop->index < 3 ? 'bg-neutral-800 text-white' : 'bg-neutral-100 text-gray-900' }} ">
                     {{-- Display Image --}}
-                    <img
-                        src="{{ asset('storage/' . $food->data['image']) }}"
-                        class="w-full h-40 object-cover rounded-lg mb-3"
-                        alt="{{ $food->name }}"
+                    <img 
+                        src="{{ str_contains($food->data['image'], 'food-submissions') 
+                            ? asset('storage/' . $food->data['image']) 
+                            : asset($food->data['image']) }}"
+                        class="w-full h-52 object-cover rounded-xl mb-4 hover:scale-105 transition"
                     >
+
 
                     {{-- image video TESTING
                     @php
@@ -182,7 +188,7 @@
 
 
                     <p class="text-gray-600 text-sm mb-4">
-                        {{ $food->data['description'] }}
+                         {{ $food->data['description'] ?? 'No description available.' }}
                     </p>
 
                     <!-- Button -->
@@ -204,4 +210,59 @@
         </div>
 
     </div>
-</x-app-layout>
+
+    <style>
+        .btn-gradient {
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: #000;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-gradient:hover {
+        background: #111;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* outline version (Approval) */
+.btn-gradient-outline {
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 2px solid #000;
+    color: #000;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    background: white;
+    transition: 0.2s;
+}
+
+.btn-gradient-outline:hover {
+    background: #000;
+    color: white;
+}
+.meal-card {
+    display: flex;              /* 🔥 INI FIX */
+    gap: 20px;
+    align-items: center;
+
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+/* ✨ HOVER EFFECT */
+.meal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+    </style>
+@endsection

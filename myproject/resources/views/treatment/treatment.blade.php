@@ -361,7 +361,7 @@ body {
     <!-- 🚨 EMERGENCY -->
 <div class="section emergency-section">
 
-    <h2 class="section-title emergency-title">🚨 Emergency Treatment</h2>
+    <h2 class="section-title emergency-title">Emergency Treatment</h2>
 
     <div class="treatment-grid">
 
@@ -436,7 +436,7 @@ onclick="openModal(
     <!-- ⭐ RECOMMENDED -->
 <div class="section recommended-section">
 
-    <h2 class="section-title recommended-title">⭐ Recommended Treatment</h2>
+    <h2 class="section-title recommended-title">Recommended Treatment</h2>
 
     <div class="treatment-grid">
 
