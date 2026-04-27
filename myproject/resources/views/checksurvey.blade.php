@@ -308,6 +308,21 @@
                     <span class="error-message">{{ $message }}</span>
                 @enderror
             </div>
+
+            <div class="form-group">
+    <label>Autoimmune Condition</label>
+
+    <select name="autoimmune_type" class="form-control" required>
+        <option value="">Select your condition</option>
+        <option value="Lupus">Lupus</option>
+        <option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
+        <option value="Multiple Sclerosis">Multiple Sclerosis</option>
+        <option value="Type 1 Diabetes">Type 1 Diabetes</option>
+        <option value="Psoriasis">Psoriasis</option>
+        <option value="Hashimoto">Hashimoto Thyroiditis</option>
+        <option value="Others">Others</option>
+    </select>
+</div>
         </div>
 
             <!-- Section 2: Symptoms -->

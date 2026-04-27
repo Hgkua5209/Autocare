@@ -251,9 +251,11 @@
             border-radius: 50px;
             cursor: pointer;
             margin-top: 20px;
+            margin:0 20px;
             transition: transform 0.3s, box-shadow 0.3s;
             font-weight: 600;
             text-transform: uppercase;
+            text-decoration: none !important;
             letter-spacing: 1px;
         }
 
@@ -262,6 +264,18 @@
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
         }
 
+        .autoimmune-block {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.autoimmune-block span {
+    color: rgba(255,255,255,0.8);
+}
+
+.autoimmune-block strong {
+    color: white;
+}
         .severity-badge {
             padding: 5px 15px;
             border-radius: 20px;
@@ -269,16 +283,62 @@
             font-weight: 600;
         }
 
-        @media print {
-            body { background: white !important; padding: 0; }
-            .container { box-shadow: none; border: 1px solid #eee; }
-            .cta-button, .header p { display: none; } /* Hide buttons when printing */
-            .severity-badge { border: 1px solid #000; padding: 2px 5px; }
-        }
+@media print {
+
+    /* RESET */
+    * {
+        box-shadow: none !important;
+    }
+
+    body {
+        background: white !important;
+        margin: 0;
+        padding: 20px;
+        -webkit-print-color-adjust: exact !important;
+    }
+    .section-title {
+        page-break-after: avoid;
+    }
+
+    @media print {
+
+    .condition-card {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+}
+    /* HIDE BUTTON */
+    button {
+        display: none !important;
+    }
+
+    /* 💥 PAKSA SEMUA FLEX/GRID JADI BLOCK */
+    div {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* CARD LOOK */
+    div {
+        margin-bottom: 10px !important;
+    }
+
+    /* ELak pecah tengah */
+    div {
+        page-break-inside: avoid;
+    }
+        .no-print {
+        display: none !important;
+    }
+
+}
 
         .severity-high { background: #ff4757; color: white; }
         .severity-medium { background: #ffa502; color: white; }
         .severity-low { background: #2ed573; color: white; }
+
+        
     </style>
 </head>
 <body>
@@ -320,6 +380,11 @@
                 @endphp
                 <span class="{{ $color }}">{{ $status }}</span>
             </div>
+            <div class="info-item autoimmune-block">
+                    <strong>Condition</strong>
+    <span>{{ $survey->autoimmune_type ?? 'N/A' }}</span>
+
+</div>
         </div>
 <!-- Autoimmune Section -->
 <div class="section">
@@ -542,7 +607,7 @@
         </div>
 
         <!-- Recommendations -->
-        <div class="section">
+        <div class="section ">
             <h2 class="section-title">💡 Personalized Recommendations</h2>
             <div class="recommendations">
         <ul>
@@ -554,18 +619,28 @@
         </div>
 
         <!-- CTA Section -->
-        <div class="section" style="text-align: center;">
+        <div class="section no-print" style="text-align: center;">
             <h2 class="section-title">🌟 Start Your Health Journey</h2>
             <p style="font-size: 1.2em; margin-bottom: 20px; color: #555;">
                 <strong>"Start your journey for 2 weeks with us"</strong><br>
                 <em>AutoCare Compass can help you</em>
             </p>
-            <button class="cta-button" onclick="startJourney()">Begin 2-Week Program</button>
-            <button class="cta-button" style="background: #6c757d; margin-top: 10px;"
-                    onclick="if(confirm('Are you sure? Your current results won\'t be saved unless you print them.')) window.location.href='/checksurvey';">
-                Redo Survey
-            </button>
+            
+                <!-- BACK BUTTON -->
+<button type="button"
+        onclick="location.href='{{ route('dashboard') }}'"
+        class="cta-button"
+        style="background: #6c757d; margin-top: 10px;">
+    ← Back
+</button>
+
+
+    <button type="button" class="cta-button"
+     onclick="window.print()">
+    📄 Download PDF
+</button>
         </div>
+
 
         <!-- Footer -->
         <div class="footer">
@@ -704,8 +779,13 @@ const symptomData = {
 
         // Print functionality
         function printReport() {
-            window.print();
+            window.onload = function() {
+    window.print();
+}
+
         }
+
+        
     </script>
 </body>
 </html>

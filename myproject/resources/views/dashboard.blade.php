@@ -437,6 +437,20 @@
             border-top: 1px solid var(--gray-light);
             margin-top: 30px;
         }
+.patient-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.autoimmune-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 22px; /* BESARKAN */
+    font-weight: 600;
+}
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -539,7 +553,14 @@
                         {{ substr($survey->patient_name ?? 'P', 0, 1) }}
                     </div>
                     <div class="patient-details">
-                        <h3>{{ $survey->patient_name ?? 'Patient Name' }}</h3>
+                        <h3>{{ $survey->patient_name ?? 'Patient Name' }}
+                                                        <!-- autoimmune type sebelah nama -->
+    @if($survey && $survey->autoimmune_type)
+        <span class="autoimmune-badge">
+            {{ $survey->autoimmune_type }}
+        </span>
+    @endif
+                        </h3>
                         <p>Age: {{ $survey->age ?? 'N/A' }} • Gender: {{ $survey->gender ?? 'N/A' }}</p>
                         <p>Last Survey: {{ \Carbon\Carbon::parse($survey->created_at ?? now())->format('M d, Y') }}</p>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MedicalSurvey;  // ✅ Correct model name
 use Illuminate\Http\Request;
 use App\Services\MedicalAnalytics;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MedicalSurveyController extends Controller  // ✅ Correct class name
 {
@@ -30,6 +31,7 @@ public function store(Request $request)
             'gender' => 'required|string|in:Male,Female,Other',
             'height_cm' => 'required|integer|min:50|max:250',
             'weight_kg' => 'required|numeric|min:20|max:300',
+            'autoimmune_type' => 'required|string',
 
             // Symptoms
             'main_symptoms' => 'required|array|min:1',
@@ -90,6 +92,7 @@ public function store(Request $request)
         if (!isset($validated['triggers'])) {
             $validated['triggers'] = json_encode([]);
         }
+
 
         // Save to database
         MedicalSurvey::create($validated);
@@ -285,5 +288,12 @@ private function generateRecommendations($survey)
     }
 
     return $recommendations;
+}
+
+public function printPDF()
+{
+
+    $survey = MedicalSurvey::latest()->first();
+    return view('trackreport', compact('survey','reportData'));
 }
 }

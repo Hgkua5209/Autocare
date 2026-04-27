@@ -105,7 +105,8 @@ Route::get('/checksurvey', [MedicalSurveyController::class, 'showSurvey'])->name
 Route::get('/survey', [MedicalSurveyController::class, 'showSurvey'])->name('medical.survey');
 Route::post('/survey', [MedicalSurveyController::class, 'store'])->name('medical.survey.store');
 Route::get('/report', [MedicalSurveyController::class, 'showReport'])->name('medical.report');
-
+Route::get('/survey/pdf', [MedicalSurveyController::class, 'printPDF'])
+    ->name('survey.pdf');
 // Authentication Required Routes
 Route::middleware(['auth'])->group(function () {
 

@@ -15,6 +15,7 @@ class MedicalSurvey extends Model
         'gender',
         'height_cm',
         'weight_kg',
+        'autoimmune_type',
         'bmi',
         'diet_description',
         'main_symptoms',
@@ -38,6 +39,7 @@ class MedicalSurvey extends Model
         'eye_symptoms',
         'triggers',
         'digestive_pattern',
+
     ];
 
     protected $casts = [
