@@ -27,20 +27,26 @@ class FoodReviewController extends Controller
     {
         $submission = FoodSubmission::findOrFail($id);
 
-        // Move approved data into foods table
+        // 1. Get the JSON data from the submission
+        $sData = $submission->data;
+
+        // 2. Map the data to the foods table columns
         Food::create([
             'name' => $submission->name,
-            'data' => $submission->data,
+
+            // These map to the specific columns seen in your phpMyAdmin screenshot
+            'disease_category' => $sData['disease_category'] ?? 'General',
+            'recommendation_type' => $sData['recommendation_type'] ?? 'Benefit',
+
+            // This keeps the rest of the "messy" details inside the JSON blob
+            'data' => $sData,
         ]);
 
-        $submission->update([
-            'status' => 'approved',
-        ]);
+        // 3. Update status
+        $submission->update(['status' => 'approved']);
 
-        return redirect()->route('admin.food.review')
-            ->with('success', 'Food approved and published.');
+        return redirect()->route('admin.food.review')->with('success', 'Food approved successfully.');
     }
-
     public function reject(Request $request, $id)
     {
         $request->validate([

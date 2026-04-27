@@ -35,6 +35,30 @@
                     @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Disease Category</label>
+                        <select name="disease_category" class="w-full border rounded p-2 bg-white" required>
+                            <option value="General">General (All Conditions)</option>
+                            <option value="Rheumatoid Arthritis (RA)">Rheumatoid Arthritis (RA)</option>
+                            <option value="Lupus (SLE)">Lupus (SLE)</option>
+                            <option value="Sjögren's Syndrome">Sjögren's Syndrome</option>
+                            <option value="Celiac Disease">Celiac Disease</option>
+                            <option value="Ankylosing Spondylitis">Ankylosing Spondylitis</option>
+                            <option value="Inflammatory Bowel Disease">Inflammatory Bowel Disease</option>
+                            <option value="Psoriatic Arthritis">Psoriatic Arthritis</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Recommendation Type</label>
+                        <select name="recommendation_type" class="w-full border rounded p-2 bg-white" required>
+                            <option value="Benefit">✅ Benefit (Recommended)</option>
+                            <option value="Avoid">❌ Avoid (Not Recommended)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <select name="type" class="w-full border rounded p-2 @error('type') border-red-500 @enderror">
                     <option value="food" {{ old('type') == 'food' ? 'selected' : '' }}>Food</option>
                     <option value="meal" {{ old('type') == 'meal' ? 'selected' : '' }}>Meal</option>
@@ -87,32 +111,35 @@
                     <p class="text-xs text-gray-500 mt-1">Supported: JPG, PNG, WEBP, GIF, MP4, MOV (Max 20MB)</p>
                 </div>
         --}}
-                <!-- Autoimmune Safety -->
-        <div class="bg-white p-6 rounded-xl shadow space-y-4">
-                <h3 class="font-semibold">Autoimmune Safety</h3>
 
-                <select name="status" class="w-full border rounded p-2">
-                    <option value="beneficial" {{ old('status') == 'beneficial' ? 'selected' : '' }}>Beneficial</option>
-                    <option value="neutral" {{ old('status') == 'neutral' ? 'selected' : '' }}>Neutral</option>
-                    <option value="avoid" {{ old('status') == 'avoid' ? 'selected' : '' }}>Avoid</option>
-                </select>
-
-                <div>
-                    <textarea name="autoimmune_notes"
-                        class="w-full border rounded p-2 @error('autoimmune_notes') border-red-500 @enderror"
-                        placeholder="Explain why this food is safe or unsafe for autoimmune users"
-                        required>{{ old('autoimmune_notes') }}</textarea>
-                    @error('autoimmune_notes') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+            <div id="nutrition-section" class="bg-white p-6 rounded-xl shadow grid grid-cols-2 gap-4">
+                <h3 class="col-span-2 font-semibold">Nutrition Facts</h3>
+                <input name="calories" value="{{ old('calories') }}" placeholder="Calories" class="border p-2 rounded">
+                <input name="protein" value="{{ old('protein') }}" placeholder="Protein" class="border p-2 rounded">
+                <input name="carbs" value="{{ old('carbs') }}" placeholder="Carbs" class="border p-2 rounded">
+                <input name="fat" value="{{ old('fat') }}" placeholder="Fat" class="border p-2 rounded">
+                <input name="fiber" value="{{ old('fiber') }}" placeholder="Fiber" class="border p-2 rounded">
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow grid grid-cols-2 gap-4">
-                <input name="calories" value="{{ old('calories') }}" placeholder="Calories" class="border p-2 rounded @error('calories') border-red-500 @enderror">
-                <input name="protein" value="{{ old('protein') }}" placeholder="Protein" class="border p-2 rounded @error('protein') border-red-500 @enderror">
-                <input name="carbs" value="{{ old('carbs') }}" placeholder="Carbs" class="border p-2 rounded @error('carbs') border-red-500 @enderror">
-                <input name="fat" value="{{ old('fat') }}" placeholder="Fat" class="border p-2 rounded @error('fat') border-red-500 @enderror">
-                <input name="fiber" value="{{ old('fiber') }}" placeholder="Fiber" class="border p-2 rounded @error('fiber') border-red-500 @enderror">
-            </div>
+            <script>
+                document.querySelector('select[name="recommendation_type"]').addEventListener('change', function() {
+                    const isAvoid = this.value === 'Avoid';
+                    const nutritionSection = document.getElementById('nutrition-section');
+                    const notesField = document.querySelector('textarea[name="autoimmune_notes"]');
+
+                    // Toggle visibility
+                    nutritionSection.style.display = isAvoid ? 'none' : 'grid';
+
+                    // Toggle HTML5 validation requirement
+                    if (isAvoid) {
+                        notesField.removeAttribute('required');
+                        // Optional: clear the values so old data isn't submitted accidentally
+                        document.querySelectorAll('#nutrition-section input').forEach(i => i.value = '');
+                    } else {
+                        notesField.setAttribute('required', 'required');
+                    }
+                });
+            </script>
 
             <div class="bg-red-50 border border-red-200 p-6 rounded-xl space-y-4">
                 <h3 class="font-semibold text-red-700">Research Evidence (Required)</h3>

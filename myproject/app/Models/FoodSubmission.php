@@ -10,6 +10,8 @@ class FoodSubmission extends Model
         'user_id',
         'name',
         'type',
+        'disease_category',     // 🔥 MUST BE HERE
+        'recommendation_type', // 🔥 MUST BE HERE
         'data',   // This handles the big array from your controller
         'status',
         'admin_note',

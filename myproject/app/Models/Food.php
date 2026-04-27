@@ -9,12 +9,17 @@ class Food extends Model
 {
     use HasFactory;
 
-    protected $table = 'foods'; // 👈 ADD THIS
+    protected $table = 'foods';
 
-    protected $fillable = ['name', 'data'];
+    // 🔥 YOU WERE MISSING THESE THREE BELOW
+    protected $fillable = [
+        'name',
+        'disease_category',
+        'recommendation_type',
+        'data',
+    ];
 
     protected $casts = [
         'data' => 'array',
     ];
 }
-

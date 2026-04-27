@@ -45,16 +45,33 @@
         </div>
 
         <!-- Tabs -->
-        <div class="flex gap-4 mb-8">
-            <button class="px-4 py-2 rounded-full bg-black text-white text-sm">
-                All
-            </button>
-            <button class="px-4 py-2 rounded-full border text-sm">
-                Autoimmune Friendly
-            </button>
-            <button class="px-4 py-2 rounded-full border text-sm">
-                Nutrition
-            </button>
+        <div class="flex gap-2 overflow-x-auto pb-4 mb-6">
+            @php
+                $categories = [
+                    'All', 'General', 'Rheumatoid Arthritis (RA)', 'Lupus (SLE)',
+                    'Sjögren\'s Syndrome', 'Celiac Disease', 'Ankylosing Spondylitis',
+                    'Inflammatory Bowel Disease', 'Psoriatic Arthritis'
+                ];
+            @endphp
+
+            @foreach($categories as $cat)
+                <a href="{{ route('food.hub', ['category' => $cat]) }}"
+                class="px-4 py-2 rounded-full text-sm whitespace-nowrap {{ $selectedCategory == $cat ? 'bg-black text-white' : 'bg-gray-200 text-gray-700' }}">
+                    {{ $cat }}
+                </a>
+            @endforeach
+        </div>
+
+        @if($selectedCategory == 'All' && auth()->user()->detected_condition)
+            <div class="bg-blue-50 p-4 rounded-lg mb-8 border border-blue-200">
+                <h3 class="text-blue-800 font-bold">Recommended for your {{ auth()->user()->detected_condition }}:</h3>
+                <p class="text-sm text-blue-600">Based on your survey, we have prioritized these foods for you.</p>
+            </div>
+        @endif
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($foods as $food)
+                @endforeach
         </div>
 
         <!-- Meals of the Day -->
@@ -65,7 +82,7 @@
                 <div class="meal-card">
                     <!-- Image placeholder -->
                     <div class="w-1/3">
-                        <img 
+                        <img
                             src="{{ asset('storage/' . $mealOfDay->data['image']) }}"
                             class="w-full h-52 object-cover rounded-xl mb-4 hover:scale-105 transition"
                         >
@@ -115,11 +132,22 @@
         <!-- Food Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($foods as $food)
+            {{-- 1. Main Card Container (Logic for Dark/Light mode included) --}}
                 <div class="rounded-2xl p-6 shadow {{ $loop->index < 3 ? 'bg-neutral-800 text-white' : 'bg-neutral-100 text-gray-900' }} ">
-                    {{-- Display Image --}}
-                    <img 
-                        src="{{ str_contains($food->data['image'], 'food-submissions') 
-                            ? asset('storage/' . $food->data['image']) 
+            {{-- 2. Benefit/Avoid Badge (Positioned at the top) --}}
+                    <div class="mb-4">
+                        @if(($food->recommendation_type ?? $food->data['recommendation_type']) == "Avoid")
+                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded">❌ Avoid</span>
+                        @else
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">✅ Benefit</span>
+                        @endif
+
+                        <span class="ml-2 text-[10px] opacity-70 italic">{{ $food->disease_category ?? $food->data['disease_category'] }}</span>
+                    </div>
+            {{-- Display Image --}}
+                    <img
+                        src="{{ str_contains($food->data['image'], 'food-submissions')
+                            ? asset('storage/' . $food->data['image'])
                             : asset($food->data['image']) }}"
                         class="w-full h-52 object-cover rounded-xl mb-4 hover:scale-105 transition"
                     >
