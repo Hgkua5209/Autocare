@@ -448,7 +448,7 @@
     color: white;
     padding: 6px 12px;
     border-radius: 12px;
-    font-size: 22px; /* BESARKAN */
+    font-size: 20px; /* BESARKAN */
     font-weight: 600;
 }
 

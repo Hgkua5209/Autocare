@@ -19,7 +19,7 @@
             <span>Check condition</span>
         </a>
 
-        <a href="#" class="nav-item">
+        <a href="{{ route('daily') }}" class="nav-item">
             <i class="fas fa-chart-line"></i>
             <span>Health Trends</span>
         </a>

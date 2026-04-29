@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\FoodReviewController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\DailyLogController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\AnalyticsController;
 use Illuminate\Support\Facades\Password;
 /*
 |--------------------------------------------------------------------------
@@ -107,6 +110,16 @@ Route::post('/survey', [MedicalSurveyController::class, 'store'])->name('medical
 Route::get('/report', [MedicalSurveyController::class, 'showReport'])->name('medical.report');
 Route::get('/survey/pdf', [MedicalSurveyController::class, 'printPDF'])
     ->name('survey.pdf');
+
+// Daily Survey Routes
+Route::get('/daily', [ProgressController::class, 'index'])->name('daily');
+Route::post('/progress', [ProgressController::class, 'store'])->name('progress.store');
+Route::post('/daily', [DailyLogController::class, 'store'])->name('daily.store');
+Route::get('/progress/end', [ProgressController::class, 'end']);
+
+//Analytics
+Route::get('/analytics/{id}', [AnalyticsController::class, 'show'])->name('analytics.show');
+
 // Authentication Required Routes
 Route::middleware(['auth'])->group(function () {
 
@@ -114,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/progress/{id}', [ProgressController::class, 'destroy']);
 
     // Dashboard Routes
 Route::get('/dashboard', [DashboardController::class, 'smartDashboard'])
