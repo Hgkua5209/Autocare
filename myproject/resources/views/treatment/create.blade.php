@@ -5,7 +5,7 @@
 <div class="create-wrapper">
 
     <div class="form-card">
-        
+
         <h2 class="form-title">+ Create Treatment Card</h2>
         <p class="form-subtitle">Add a new treatment plan for autoimmune care</p>
 
@@ -15,6 +15,19 @@
             <div class="form-group">
                 <label>Title</label>
                 <input type="text" name="title" placeholder="e.g. Anti-inflammatory Diet" required>
+            </div>
+
+            <div class="form-group">
+                <label>Autoimmune Disease</label>
+                <select name="disease_name" required>
+                    <option value="" disabled selected>Select a condition</option>
+                    <option value="Lupus">Lupus</option>
+                    <option value="Psoriasis">Psoriasis</option>
+                    <option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
+                    <option value="Hashimoto">Hashimoto's Thyroiditis</option>
+                    <option value="Celiac">Celiac Disease</option>
+                    <option value="IBD">Inflammatory Bowel Disease (IBD)</option>
+                </select>
             </div>
 
             <div class="form-row">
@@ -90,7 +103,7 @@
     border-radius: 20px;
 
     /* ✨ tambah ni */
-    box-shadow: 
+    box-shadow:
         0 10px 30px rgba(0,0,0,0.08),
         0 2px 10px rgba(0,0,0,0.05);
 
@@ -147,7 +160,7 @@
 .form-group textarea:focus {
     background: #ffffff;
 
-    box-shadow: 
+    box-shadow:
         inset 0 0 0 2px #667eea,
         0 5px 15px rgba(102,126,234,0.15);
 }

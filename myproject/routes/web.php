@@ -159,9 +159,8 @@ Route::get('/dashboard', [DashboardController::class, 'smartDashboard'])
     // Food Hub Routes
     Route::get('/food-hub', [FoodController::class, 'index'])->name('food.hub');
     Route::get('/food/{id}', [FoodController::class, 'show'])->name('food.show');
-    Route::post('/food/{id}/like', [FoodController::class, 'like'])->name('food.like');
-    Route::post('/food/{id}/save', [FoodController::class, 'save'])->name('food.save');
-});
+    Route::post('/food/{id}/like', [FoodController::class, 'toggleLike'])->name('food.like');
+    Route::post('/food/{id}/save', [FoodController::class, 'toggleSave'])->name('food.save');});
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

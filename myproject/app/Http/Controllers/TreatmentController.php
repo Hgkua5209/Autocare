@@ -12,6 +12,11 @@ public function index()
 {
     $treatments = Treatment::all();
 
+
+    // 🔥 This line solves the "Undefined variable" error
+    // It looks at the 'disease_name' column and gets one of each unique name
+    $diseases = Treatment::distinct()->pluck('disease_name')->filter()->toArray();
+
     // pecahkan ikut category
     $emergency = $treatments->where('category', 'emergency');
     $recommended = $treatments->where('category', 'recommended');
@@ -31,6 +36,7 @@ public function index()
         // ✅ validation
         $request->validate([
             'title' => 'required',
+            'disease_name' => 'required|string',
             'type' => 'required',
             'level' => 'required',
             'description' => 'required',
@@ -42,6 +48,7 @@ public function index()
         // ✅ insert into DB
         Treatment::create([
             'title' => $request->title,
+            'disease_name' => $request->disease_name,
             'type' => $request->type,
             'description' => $request->description,
             'level' => $request->level,

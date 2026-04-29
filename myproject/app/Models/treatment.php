@@ -8,6 +8,7 @@ class Treatment extends Model
 {
     protected $fillable = [
         'title',
+        'disease_name',
         'type',
         'description',
         'level',

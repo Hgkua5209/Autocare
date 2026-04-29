@@ -22,4 +22,15 @@ class Food extends Model
     protected $casts = [
         'data' => 'array',
     ];
+
+    public function interactions()
+    {
+        return $this->hasMany(UserFoodInteraction::class, 'food_id');
+    }
+
+    // This allows you to call $food->interactions_count
+    public function getLikesCountAttribute()
+    {
+        return $this->interactions()->where('is_liked', true)->count();
+    }
 }

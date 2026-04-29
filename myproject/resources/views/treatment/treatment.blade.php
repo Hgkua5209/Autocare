@@ -340,6 +340,24 @@ body {
 .research-link:hover {
     text-decoration: underline;
 }
+
+.filter-container { margin-bottom: 30px; }
+    .filter-btn {
+        padding: 8px 20px;
+        border-radius: 25px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+    .filter-btn.active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
 </style>
 
 <div class="treatment-container">
@@ -350,13 +368,22 @@ body {
 
         <div class="title">Treatment Hub</div>
 
-        <input 
-            type="text" 
-            placeholder="Search treatment..." 
+        <input
+            type="text"
+            placeholder="Search treatment..."
             class="search-box"
             id="searchInput"
         >
     </div>
+
+<div class="filter-container mb-8 flex flex-wrap justify-center gap-2">
+    <button class="filter-btn active" data-filter="all">All Diseases</button>
+    <button class="filter-btn" data-filter="lupus">Lupus</button>
+    <button class="filter-btn" data-filter="psoriasis">Psoriasis</button>
+    <button class="filter-btn" data-filter="rheumatoid arthritis">Rheumatoid Arthritis</button>
+    <button class="filter-btn" data-filter="hashimoto">Hashimoto</button>
+    <button class="filter-btn" data-filter="celiac">Celiac</button>
+</div>
 
     <!-- 🚨 EMERGENCY -->
 <div class="section emergency-section">
@@ -368,6 +395,7 @@ body {
         {{-- SHOW FIRST 3 --}}
         @foreach($emergency->take(3) as $item)
 <div class="treatment-card emergency-card searchable"
+     data-disease="{{ strtolower($item->disease_name) }}"
      data-title="{{ strtolower($item->title) }}"
      data-type="{{ strtolower($item->type) }}"
      data-desc="{{ strtolower($item->description) }}">
@@ -442,6 +470,7 @@ onclick="openModal(
 
         @foreach($recommended as $item)
 <div class="treatment-card recommended-card searchable"
+     data-disease="{{ strtolower($item->disease_name) }}"
      data-title="{{ strtolower($item->title) }}"
      data-type="{{ strtolower($item->type) }}"
      data-desc="{{ strtolower($item->description) }}">
@@ -516,30 +545,47 @@ onclick="openModal(
 </div>
 
 <script>
-const searchInput = document.getElementById('searchInput');
-
-searchInput.addEventListener('keyup', function () {
-    const keyword = this.value.toLowerCase();
-
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const filterBtns = document.querySelectorAll('.filter-btn');
     const cards = document.querySelectorAll('.searchable');
 
-    cards.forEach(card => {
-        const title = card.dataset.title;
-        const type = card.dataset.type;
-        const desc = card.dataset.desc;
+    function applyFilters() {
+        const keyword = searchInput.value.toLowerCase();
+        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
 
-        if (
-            title.includes(keyword) ||
-            type.includes(keyword) ||
-            desc.includes(keyword)
-        ) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
+        cards.forEach(card => {
+            const title = card.dataset.title || "";
+            const desc = card.dataset.desc || "";
+            const disease = card.dataset.disease || "";
+
+            const matchesSearch = title.includes(keyword) || desc.includes(keyword);
+            const matchesDisease = (activeFilter === 'all' || disease === activeFilter);
+
+            if (matchesSearch && matchesDisease) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Hide section titles (Emergency/Recommended) if no cards match
+        document.querySelectorAll('.section').forEach(section => {
+            const visibleCards = section.querySelectorAll('.searchable[style="display: block;"]').length;
+            section.style.display = (visibleCards === 0) ? "none" : "block";
+        });
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            applyFilters();
+        });
     });
-});
 
+    searchInput.addEventListener('keyup', applyFilters);
+});
 
 /* ===========================
    CARD
