@@ -53,8 +53,20 @@ class FoodController extends Controller
     // Single food detail page
     public function show($id)
     {
+        $food = Food::findOrFail($id);
+        $userId = auth()->id(); // Gets your logged-in ID (6)
+
+        // Check if a record exists for this specific user and food
+        $interaction = \DB::table('user_food_interactions')
+            ->where('user_id', $userId)
+            ->where('food_id', $id)
+            ->first();
+
         return view('food-show', [
-            'food' => Food::findOrFail($id)
+            'food' => $food,
+            // If an interaction exists, check the boolean values; otherwise, default to false
+            'isLiked' => $interaction ? (bool)$interaction->is_liked : false,
+            'isSaved' => $interaction ? (bool)$interaction->is_saved : false,
         ]);
     }
 
