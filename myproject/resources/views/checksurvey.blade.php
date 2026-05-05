@@ -226,7 +226,12 @@
     <div class="container">
         <div class="header">
             <h1>🏥 AutoCare Compass</h1>
-            <p>Complete this survey for personalized autoimmune analysis</p>
+            <p>Complete this survey to understand your symptom patterns and lifestyle insights</p>
+            <div style="background:#fff3cd; padding:10px; border-radius:10px; margin-top:15px;">
+                <small style="color:red;">
+                ⚠️ This tool is not intended to diagnose medical conditions. Please consult a healthcare professional for diagnosis.
+                </small>
+            </div>
         </div>
 
         <!-- Success/Error Messages -->
@@ -310,47 +315,39 @@
             </div>
 
             <div class="form-group">
-    <label>Autoimmune Condition</label>
+                <label>Do you have a diagnosed autoimmune condition?</label>
 
-    <select name="autoimmune_type" class="form-control" required>
-        <option value="">Select your condition</option>
-        <option value="Lupus">Lupus</option>
-        <option value="Rheumatoid Arthritis">Rheumatoid Arthritis</option>
-        <option value="Multiple Sclerosis">Multiple Sclerosis</option>
-        <option value="Type 1 Diabetes">Type 1 Diabetes</option>
-        <option value="Psoriasis">Psoriasis</option>
-        <option value="Hashimoto">Hashimoto Thyroiditis</option>
-        <option value="Others">Others</option>
-    </select>
-</div>
+                <select id="autoimmuneType" name="autoimmune_type" class="form-control">
+                    <option value="">Not diagnosed / Not sure</option>
+                    <option value="Lupus" {{ old('autoimmune_type') == 'Lupus' ? 'selected' : '' }}>Lupus</option>
+                    <option value="Rheumatoid Arthritis" {{ old('autoimmune_type') == 'Rheumatoid Arthritis' ? 'selected' : '' }}>Rheumatoid Arthritis</option>
+                    <option value="Psoriasis" {{ old('autoimmune_type') == 'Psoriasis' ? 'selected' : '' }}>Psoriasis</option>
+                </select>
+
+                <small style="color:#666;">
+                This is optional and will only be used to personalize your report.
+                </small>
+            </div>
         </div>
+
 
             <!-- Section 2: Symptoms -->
             <div class="form-section">
                 <h2 class="section-title">🤒 Symptoms Assessment</h2>
 
-                <div class="form-group">
-                    <label>Main Symptoms (Select all that apply) <span class="required">*</span></label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" name="main_symptoms[]" value="Joint Pain"
-                                {{ in_array('Joint Pain', old('main_symptoms', [])) ? 'checked' : '' }}>
-                            <label>Joint Pain</label>
-                        </div>
+                <div class="symptom-group general-group">
+                    <!-- ⚡ GENERAL -->
+                    <h3 style="margin-top:20px;">⚡ General Symptoms</h3>
+                    <div class="form-group checkbox-group">
                         <div class="checkbox-item">
                             <input type="checkbox" name="main_symptoms[]" value="Fatigue"
                                 {{ in_array('Fatigue', old('main_symptoms', [])) ? 'checked' : '' }}>
                             <label>Fatigue</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="main_symptoms[]" value="Brain Fog"
-                                {{ in_array('Brain Fog', old('main_symptoms', [])) ? 'checked' : '' }}>
-                            <label>Brain Fog</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" name="main_symptoms[]" value="Skin Rash"
-                                {{ in_array('Skin Rash', old('main_symptoms', [])) ? 'checked' : '' }}>
-                            <label>Skin Rash</label>
+                            <input type="checkbox" name="main_symptoms[]" value="Fever"
+                                {{ in_array('Fever', old('main_symptoms', [])) ? 'checked' : '' }}>
+                            <label>Fever</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" name="main_symptoms[]" value="Muscle Pain"
@@ -358,19 +355,169 @@
                             <label>Muscle Pain</label>
                         </div>
                         <div class="checkbox-item">
-                            <input type="checkbox" name="main_symptoms[]" value="Digestive Issues"
-                                {{ in_array('Digestive Issues', old('main_symptoms', [])) ? 'checked' : '' }}>
-                            <label>Digestive Issues</label>
-                        </div>
-                        <div class="checkbox-item">
                             <input type="checkbox" name="main_symptoms[]" value="Hair Loss"
                                 {{ in_array('Hair Loss', old('main_symptoms', [])) ? 'checked' : '' }}>
                             <label>Hair Loss</label>
                         </div>
+                    </div>
+                </div>
+
+                <!-- 🦴 JOINT -->
+                <div class="symptom-group joint-group">
+                    <h3 >🦴 Joint Symptoms</h3>
+                    <div class="form-group checkbox-group">
                         <div class="checkbox-item">
-                            <input type="checkbox" name="main_symptoms[]" value="Fever"
-                                {{ in_array('Fever', old('main_symptoms', [])) ? 'checked' : '' }}>
-                            <label>Fever</label>
+                            <input type="checkbox" id="jointPain" name="main_symptoms[]" value="Joint Pain"
+                                {{ in_array('Joint Pain', old('main_symptoms', [])) ? 'checked' : '' }}>
+                            <label>Joint Pain</label>
+                        </div>
+                    </div>
+
+
+                    <!-- Joint Detail -->
+                    <div id="jointSection" class="form-group" style="display:none;">
+                        <label>Morning Stiffness Duration</label>
+                        <select name="morning_stiffness">
+                            <option value="">Select duration</option>
+                            <option value="none" {{ old('morning_stiffness') == 'none' ? 'selected' : '' }}>No stiffness</option>
+                            <option value="less_30min" {{ old('morning_stiffness') == 'less_30min' ? 'selected' : '' }}>Less than 30 minutes</option>
+                            <option value="30min_1h" {{ old('morning_stiffness') == '30min_1h' ? 'selected' : '' }}>30 min - 1 hour</option>
+                            <option value="1_2h" {{ old('morning_stiffness') == '1_2h' ? 'selected' : '' }}>1-2 hours</option>
+                            <option value="more_2h" {{ old('morning_stiffness') == 'more_2h' ? 'selected' : '' }}>More than 2 hours</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 🧴 SKIN -->
+                <div class="symptom-group skin-group">
+                    <h3>🧴 Skin Symptoms</h3>
+                    <div class="form-group checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="skinRash" name="main_symptoms[]" value="Skin Rash"
+                                {{ in_array('Skin Rash', old('main_symptoms', [])) ? 'checked' : '' }}>
+                            <label>Skin Rash</label>
+                        </div>
+                    </div>
+
+                    <!-- Skin Detail -->
+                    <div id="skinSection" class="form-group" style="display:none;">
+                        <label>Specific Skin Symptoms</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="skin_symptoms[]" value="butterfly_rash"
+                                    {{ in_array('butterfly_rash', old('skin_symptoms', [])) ? 'checked' : '' }}>
+                                <label>Butterfly-shaped face rash</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="skin_symptoms[]" value="silvery_scales"
+                                    {{ in_array('silvery_scales', old('skin_symptoms', [])) ? 'checked' : '' }}>
+                                <label>Silvery scales</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="skin_symptoms[]" value="sun_sensitivity"
+                                    {{ in_array('sun_sensitivity', old('skin_symptoms', [])) ? 'checked' : '' }}>
+                                <label>Worsens with sun</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="skin_symptoms[]" value="none"
+                                    {{ in_array('none', old('skin_symptoms', [])) ? 'checked' : '' }}>
+                                <label>None of these</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 👁️ EYE -->
+                <div class="symptom-group eye-group">
+                    <h3>👁️ Eye Symptoms</h3>
+                    <div class="form-group checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="eyeIssue" name="main_symptoms[]" value="Eye Issues"
+                                {{ in_array('Eye Issues', old('main_symptoms', [])) ? 'checked' : '' }}>
+                            <label>Eye Problems</label>
+                        </div>
+                    </div>
+
+                    <!-- Eye Detail -->
+                    <div id="eyeSection" class="form-group" style="display:none;">
+                        <select name="eye_symptoms">
+                            <option value="">Select</option>
+                            <option value="none" {{ old('eye_symptoms') == 'none' ? 'selected' : '' }}>No symptoms</option>
+                            <option value="dry_eyes" {{ old('eye_symptoms') == 'dry_eyes' ? 'selected' : '' }}>Dry eyes</option>
+                            <option value="red_painful" {{ old('eye_symptoms') == 'red_painful' ? 'selected' : '' }}>Red/painful eyes</option>
+                            <option value="vision_changes" {{ old('eye_symptoms') == 'vision_changes' ? 'selected' : '' }}>Vision changes</option>
+                            <option value="uveitis" {{ old('eye_symptoms') == 'uveitis' ? 'selected' : '' }}>Uveitis (diagnosed)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 🍽️ DIGESTIVE -->
+                <div class="symptom-group digestive-group">
+                    <h3>🍽️ Digestive</h3>
+                    <div class="form-group checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="digestiveIssues" name="main_symptoms[]" value="Digestive Issues"
+                                {{ in_array('Digestive Issues', old('main_symptoms', [])) ? 'checked' : '' }}>
+                            <label>Digestive Issues</label>
+                        </div>
+                    </div>
+
+                    <!-- Digestive Detail -->
+                    <div id="digestiveSection" class="form-group" style="display:none;">
+                        <select name="digestive_pattern">
+                            <option value="">Select pattern</option>
+                            <option value="none" {{ old('digestive_pattern') == 'none' ? 'selected' : '' }}>No issues</option>
+                            <option value="pain_relief" {{ old('digestive_pattern') == 'pain_relief' ? 'selected' : '' }}>Relief after bowel movement</option>
+                            <option value="blood_stool" {{ old('digestive_pattern') == 'blood_stool' ? 'selected' : '' }}>Blood/mucus in stool</option>
+                            <option value="worse_food" {{ old('digestive_pattern') == 'worse_food' ? 'selected' : '' }}>Worse after eating</option>
+                            <option value="bloating" {{ old('digestive_pattern') == 'bloating' ? 'selected' : '' }}>Bloating/gas</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <!-- Trigger Identification -->
+                <div class="form-group">
+                    <label>What triggers symptom flares? (Select top 2)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="stress"
+                                {{ in_array('stress', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>Stress</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="food"
+                                {{ in_array('food', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>Specific foods</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="infection"
+                                {{ in_array('infection', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>Infections/colds</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="weather"
+                                {{ in_array('weather', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>Damp weather</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="hormonal"
+                                {{ in_array('hormonal', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>Menstrual cycle</label>
+                        </div>
+                                <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="respiratory"
+                                {{ in_array('respiratory', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>Respiratory</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="triggers[]" value="none"
+                                {{ in_array('none', old('triggers', [])) ? 'checked' : '' }}>
+                            <label>None identified</label>
                         </div>
                     </div>
                 </div>
@@ -431,139 +578,13 @@
                 </div>
                 <!-- Find this in your checksurvey.blade.php -->
 
-<!-- ADD THE NEW QUESTIONS RIGHT HERE -->
-<!-- ================================== -->
-<!-- Morning Stiffness Duration -->
-<div class="form-group">
-    <label>Morning Stiffness Duration <span class="required">*</span></label>
-    <select name="morning_stiffness" class="@error('morning_stiffness') is-invalid @enderror" required>
-        <option value="">Select duration</option>
-        <option value="none" {{ old('morning_stiffness') == 'none' ? 'selected' : '' }}>No morning stiffness</option>
-        <option value="less_30min" {{ old('morning_stiffness') == 'less_30min' ? 'selected' : '' }}>Less than 30 minutes</option>
-        <option value="30min_1h" {{ old('morning_stiffness') == '30min_1h' ? 'selected' : '' }}>30 minutes to 1 hour</option>
-        <option value="1_2h" {{ old('morning_stiffness') == '1_2h' ? 'selected' : '' }}>1-2 hours</option>
-        <option value="more_2h" {{ old('morning_stiffness') == 'more_2h' ? 'selected' : '' }}>More than 2 hours</option>
-    </select>
-    @error('morning_stiffness')
-        <span class="error-message">{{ $message }}</span>
-    @enderror
-    <small style="color: #666;">How long does joint stiffness last in the morning?</small>
-</div>
 
-<!-- Skin/Mouth Symptoms -->
-<div class="form-group">
-    <label>Specific Skin/Mouth Symptoms (Select all that apply)</label>
-    <div class="checkbox-group">
-        <div class="checkbox-item">
-            <input type="checkbox" name="skin_symptoms[]" value="butterfly_rash"
-                {{ in_array('butterfly_rash', old('skin_symptoms', [])) ? 'checked' : '' }}>
-            <label>Butterfly-shaped face rash</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="skin_symptoms[]" value="mouth_ulcers"
-                {{ in_array('mouth_ulcers', old('skin_symptoms', [])) ? 'checked' : '' }}>
-            <label>Recurrent mouth sores</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="skin_symptoms[]" value="silvery_scales"
-                {{ in_array('silvery_scales', old('skin_symptoms', [])) ? 'checked' : '' }}>
-            <label>Silvery skin scales (elbows/knees)</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="skin_symptoms[]" value="sun_sensitivity"
-                {{ in_array('sun_sensitivity', old('skin_symptoms', [])) ? 'checked' : '' }}>
-            <label>Skin rash worsens with sun</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="skin_symptoms[]" value="none"
-                {{ in_array('none', old('skin_symptoms', [])) ? 'checked' : '' }}>
-            <label>None of these</label>
-        </div>
-    </div>
-    @error('skin_symptoms')
-        <span class="error-message">{{ $message }}</span>
-    @enderror
-</div>
-
-<!-- Eye Symptoms -->
-<div class="form-group">
-    <label>Eye Symptoms <span class="required">*</span></label>
-    <select name="eye_symptoms" class="@error('eye_symptoms') is-invalid @enderror" required>
-        <option value="">Select</option>
-        <option value="none" {{ old('eye_symptoms') == 'none' ? 'selected' : '' }}>No eye symptoms</option>
-        <option value="dry_eyes" {{ old('eye_symptoms') == 'dry_eyes' ? 'selected' : '' }}>Dry/gritty eyes</option>
-        <option value="red_painful" {{ old('eye_symptoms') == 'red_painful' ? 'selected' : '' }}>Red/painful eyes</option>
-        <option value="vision_changes" {{ old('eye_symptoms') == 'vision_changes' ? 'selected' : '' }}>Vision changes/blurriness</option>
-        <option value="uveitis" {{ old('eye_symptoms') == 'uveitis' ? 'selected' : '' }}>Uveitis (diagnosed)</option>
-    </select>
-    @error('eye_symptoms')
-        <span class="error-message">{{ $message }}</span>
-    @enderror
-    <small style="color: #666;">Dry eyes = Sjögren's; Uveitis = AS/IBD</small>
-</div>
-
-<!-- Trigger Identification -->
-<div class="form-group">
-    <label>What triggers symptom flares? (Select top 2)</label>
-    <div class="checkbox-group">
-        <div class="checkbox-item">
-            <input type="checkbox" name="triggers[]" value="stress"
-                {{ in_array('stress', old('triggers', [])) ? 'checked' : '' }}>
-            <label>Stress</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="triggers[]" value="food"
-                {{ in_array('food', old('triggers', [])) ? 'checked' : '' }}>
-            <label>Specific foods</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="triggers[]" value="infection"
-                {{ in_array('infection', old('triggers', [])) ? 'checked' : '' }}>
-            <label>Infections/colds</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="triggers[]" value="weather"
-                {{ in_array('weather', old('triggers', [])) ? 'checked' : '' }}>
-            <label>Cold/damp weather</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="triggers[]" value="hormonal"
-                {{ in_array('hormonal', old('triggers', [])) ? 'checked' : '' }}>
-            <label>Menstrual cycle</label>
-        </div>
-        <div class="checkbox-item">
-            <input type="checkbox" name="triggers[]" value="none"
-                {{ in_array('none', old('triggers', [])) ? 'checked' : '' }}>
-            <label>None identified</label>
-        </div>
-    </div>
-    @error('triggers')
-        <span class="error-message">{{ $message }}</span>
-    @enderror
-    <small style="color: #666;">Select up to 2 main triggers</small>
-</div>
-
-<!-- Digestive Pattern -->
-<div class="form-group">
-    <label>Digestive Issues Pattern <span class="required">*</span></label>
-    <select name="digestive_pattern" class="@error('digestive_pattern') is-invalid @enderror" required>
-        <option value="">Select pattern</option>
-        <option value="none" {{ old('digestive_pattern') == 'none' ? 'selected' : '' }}>No digestive issues</option>
-        <option value="pain_relief" {{ old('digestive_pattern') == 'pain_relief' ? 'selected' : '' }}>Pain relieved after bowel movement</option>
-        <option value="blood_stool" {{ old('digestive_pattern') == 'blood_stool' ? 'selected' : '' }}>Blood/mucus in stool</option>
-        <option value="worse_food" {{ old('digestive_pattern') == 'worse_food' ? 'selected' : '' }}>Worse immediately after eating</option>
-        <option value="bloating" {{ old('digestive_pattern') == 'bloating' ? 'selected' : '' }}>Mainly bloating/gas</option>
-    </select>
-    @error('digestive_pattern')
-        <span class="error-message">{{ $message }}</span>
-    @enderror
-    <small style="color: #666;">IBD = blood in stool; IBS = pain relief after BM</small>
-</div>
 <!-- ================================== -->
 <!-- END OF NEW QUESTIONS -->
 <!-- The next line should be the closing </div> for Section 2 -->
  <!-- This closes the <div class="form-section"> for Symptoms Assessment -->
             </div>
+            
 
             
 
@@ -704,9 +725,111 @@
 
 
 <script>
-    // Show alerts
-    document.addEventListener('DOMContentLoaded', function() {
-        const successAlert = document.getElementById('successAlert');
+document.addEventListener('DOMContentLoaded', function () {
+
+    const autoimmuneType = document.getElementById('autoimmuneType');
+    const joint = document.getElementById('jointPain');
+    const skin = document.getElementById('skinRash');
+    const digestive = document.getElementById('digestiveIssues');
+    const eyeSection = document.getElementById('eyeSection');
+    const jointSection = document.getElementById('jointSection');
+    const skinSection = document.getElementById('skinSection');
+    const eye = document.getElementById('eyeIssue');
+    const digestiveSection = document.getElementById('digestiveSection');
+
+    function filterSymptoms() {
+
+        const type = autoimmuneType.value;
+
+        // reset semua detail bila tukar type
+        jointSection.style.display = 'none';
+        skinSection.style.display = 'none';
+        eyeSection.style.display = 'none';
+        digestiveSection.style.display = 'none';
+
+        // reset checkbox untuk section yang hide
+        document.querySelectorAll('.symptom-group').forEach(group => {
+            if (window.getComputedStyle(group).display === 'none') {
+                group.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
+        });
+
+        // reset semua dulu
+        document.querySelectorAll('.symptom-group').forEach(el => {
+            el.style.display = 'block';
+        });
+
+        // kalau tak pilih → show semua
+        if (!type) return;
+
+        // hide semua dulu (except general)
+        document.querySelectorAll('.symptom-group').forEach(el => {
+            if (!el.classList.contains('general-group')) {
+                el.style.display = 'none';
+            }
+        });
+
+        // SHOW BASED ON TYPE
+        if (type === 'Lupus') {
+            document.querySelectorAll('.skin-group, .eye-group').forEach(el => el.style.display = 'block');
+        }
+
+        if (type === 'Rheumatoid Arthritis') {
+            document.querySelectorAll('.joint-group, .eye-group').forEach(el => el.style.display = 'block');
+        }
+
+        if (type === 'Psoriasis') {
+            document.querySelectorAll('.skin-group, .eye-group').forEach(el => el.style.display = 'block');
+        }
+    }
+
+    // trigger bila tukar dropdown
+    autoimmuneType.addEventListener('change', filterSymptoms);
+
+    // run on load
+    filterSymptoms();
+
+    function toggleSections() {
+        // Joint → stiffness
+        if (joint && joint.offsetParent !== null) {
+            jointSection.style.display = joint.checked ? 'block' : 'none';
+        }
+
+        // Skin → skin details + eye (optional link)
+        skinSection.style.display = skin.checked ? 'block' : 'none';
+
+        // Eye (kau boleh decide logic)
+        eyeSection.style.display = eye.checked ? 'block' : 'none';
+
+        // Digestive
+        digestiveSection.style.display = digestive.checked ? 'block' : 'none';
+    }
+
+    document.querySelectorAll('input[name="triggers[]"]').forEach(cb => {
+            cb.addEventListener('change', function () {
+
+                if (this.value === 'none' && this.checked) {
+                    document.querySelectorAll('input[name="triggers[]"]').forEach(c => {
+                        if (c.value !== 'none') c.checked = false;
+                    });
+                }
+
+                if (this.value !== 'none' && this.checked) {
+                    document.querySelector('input[value="none"]').checked = false;
+                }
+            });
+        });
+
+
+    // trigger bila click
+    document.querySelectorAll('input[name="main_symptoms[]"]').forEach(cb => {
+        cb.addEventListener('change', toggleSections);
+    });
+
+    // run on load (for old value)
+    toggleSections();
+
+            const successAlert = document.getElementById('successAlert');
         const errorAlert = document.getElementById('errorAlert');
         const validationAlert = document.getElementById('validationAlert');
 
@@ -728,8 +851,6 @@
         form.addEventListener('submit', function(event) {
             let isValid = true;
             
-
-
             // 2. Check if at least one symptom is selected
             const symptomCheckboxes = document.querySelectorAll('input[name="main_symptoms[]"]:checked');
             if (symptomCheckboxes.length === 0) {
@@ -751,31 +872,39 @@
             }
 
             // 5. Validate skin symptoms (at least one OR "none" selected)
-            const skinCheckboxes = document.querySelectorAll('input[name="skin_symptoms[]"]:checked');
-            if (skinCheckboxes.length === 0) {
-                alert('Please select at least one skin symptom or choose "None of these".');
-                isValid = false;
+            if (skin.checked) {
+                const skinChecked = document.querySelectorAll('input[name="skin_symptoms[]"]:checked');
+                if (skinChecked.length === 0) {
+                    alert('Please select at least one skin symptom.');
+                    isValid = false;
+                }
             }
 
             // 6. Validate morning stiffness is selected
-            const morningStiffness = document.querySelector('[name="morning_stiffness"]').value;
-            if (!morningStiffness) {
-                alert('Please select morning stiffness duration.');
-                isValid = false;
+            if (joint.checked && joint.offsetParent !== null) {
+                const morningStiffness = document.querySelector('[name="morning_stiffness"]').value;
+                if (!morningStiffness) {
+                    alert('Please select morning stiffness duration.');
+                    isValid = false;
+                }
             }
 
             // 7. Validate eye symptoms is selected
-            const eyeSymptoms = document.querySelector('[name="eye_symptoms"]').value;
-            if (!eyeSymptoms) {
-                alert('Please select eye symptoms.');
-                isValid = false;
+            if (eye.checked) {
+                const eyeSymptoms = document.querySelector('[name="eye_symptoms"]').value;
+                if (!eyeSymptoms) {
+                    alert('Please select eye symptoms.');
+                    isValid = false;
+                }
             }
 
             // 8. Validate digestive pattern is selected
-            const digestivePattern = document.querySelector('[name="digestive_pattern"]').value;
-            if (!digestivePattern) {
-                alert('Please select digestive pattern.');
-                isValid = false;
+            if (digestive.checked) {
+                const digestivePattern = document.querySelector('[name="digestive_pattern"]').value;
+                if (!digestivePattern) {
+                    alert('Please select digestive pattern.');
+                    isValid = false;
+                }
             }
 
             // If any validation failed, prevent form submission
@@ -785,6 +914,7 @@
             }
 
             // If "none" is selected with other skin symptoms, confirm with user
+            const skinCheckboxes = document.querySelectorAll('input[name="skin_symptoms[]"]:checked');
             const noneSkinSelected = Array.from(skinCheckboxes).some(cb => cb.value === 'none');
             if (noneSkinSelected && skinCheckboxes.length > 1) {
                 if (!confirm('You selected "None of these" with other skin symptoms. Continue?')) {
@@ -804,7 +934,7 @@
 
             // All validations passed
             return true;
-        });
+});
     });
 </script>
 
