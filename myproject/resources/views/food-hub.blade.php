@@ -16,19 +16,22 @@
 
     <!-- Buttons -->
     <div class="flex gap-3">
+        @if(auth()->user()->role === 'admin')
 
-        <!-- Approval (first) -->
-        <a href="{{ url('/my-food-submissions') }}"
-           class="btn-gradient-outline">
-            Approval
-        </a>
+            <a href="{{ route('food.manage') }}" class="btn-gradient-outline">
+                <i class="fas fa-tasks mr-1"></i> Manage
+            </a>
 
-        <!-- Upload -->
-        <a href="{{ route('food.upload') }}"
-           class="btn-gradient">
-            + Upload
-        </a>
+            <!-- Approval (Only Admin) -->
+            <a href="{{ url('/my-food-submissions') }}" class="btn-gradient-outline">
+                Approval
+            </a>
 
+            <!-- Upload (Only Admin) -->
+            <a href="{{ route('food.upload') }}" class="btn-gradient">
+                + Upload
+            </a>
+        @endif
     </div>
 
 </div>
@@ -37,15 +40,15 @@
         <div class="hub-navigation mb-6">
             <div class="flex justify-center mb-8">
                 <div class="bg-gray-100 p-1 rounded-xl flex items-center shadow-inner inline-flex">
-                    <button 
-                        class="nav-btn px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 active bg-black text-white" 
+                    <button
+                        class="nav-btn px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 active bg-black text-white"
                         data-type="food"
                         id="foodToggle">
                         <i class="fas fa-apple-alt"></i>
                         Single Food
                     </button>
-                    <button 
-                        class="nav-btn px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-black" 
+                    <button
+                        class="nav-btn px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-black"
                         data-type="meal"
                         id="mealToggle">
                         <i class="fas fa-utensils"></i>
@@ -55,7 +58,7 @@
             </div>
 
             <div class="flex justify-between items-center mb-6">
-                <button id="viewSavedBtn" 
+                <button id="viewSavedBtn"
                         class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-semibold text-gray-700 hover:bg-gray-50 transition shadow-sm">
                     <i class="far fa-bookmark text-blue-500"></i>
                     <span>Saved Items</span>

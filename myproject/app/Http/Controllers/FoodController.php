@@ -125,4 +125,29 @@ class FoodController extends Controller
     }
 
 
+    public function manage()
+    {
+        // Restrict to admins
+        if (auth()->user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $foods = Food::latest()->get();
+        return view('food-manage', compact('foods'));
+    }
+
+    public function destroy($id)
+    {
+        if (auth()->user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $food = Food::findOrFail($id);
+        $food->delete();
+
+        return redirect()->back()->with('success', 'Food item removed successfully.');
+    }
+
+
+
 }

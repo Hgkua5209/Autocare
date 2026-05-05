@@ -142,26 +142,26 @@
             </script>
 
             <div class="bg-red-50 border border-red-200 p-6 rounded-xl space-y-4">
-                <h3 class="font-semibold text-red-700">Research Evidence (Required)</h3>
+                <h3 class="font-semibold text-red-700">Research Evidence (Optional)</h3>
 
                 <div>
                     <input name="research_title" value="{{ old('research_title') }}"
                         class="w-full border p-2 rounded @error('research_title') border-red-500 @enderror"
-                        placeholder="Research Title" required>
+                        placeholder="Research Title">
                     @error('research_title') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <input name="research_source" value="{{ old('research_source') }}"
                         class="w-full border p-2 rounded @error('research_source') border-red-500 @enderror"
-                        placeholder="Source (PubMed, WHO, etc)" required>
+                        placeholder="Source (PubMed, WHO, etc)">
                     @error('research_source') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <input name="research_url" value="{{ old('research_url') }}"
                         class="w-full border p-2 rounded @error('research_url') border-red-500 @enderror"
-                        placeholder="Research Link (URL)" required>
+                        placeholder="Research Link (URL)">
                     @error('research_url') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 

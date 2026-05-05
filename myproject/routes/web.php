@@ -162,6 +162,14 @@ Route::get('/dashboard', [DashboardController::class, 'smartDashboard'])
     Route::post('/food/{id}/like', [FoodController::class, 'toggleLike'])->name('food.like');
     Route::post('/food/{id}/save', [FoodController::class, 'toggleSave'])->name('food.save');});
 
+    Route::middleware(['auth'])->group(function () {
+        // Management Page
+        Route::get('/food-manage', [FoodController::class, 'manage'])->name('food.manage');
+
+        // Delete Action
+        Route::delete('/food/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
+    });
+
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
