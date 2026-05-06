@@ -617,42 +617,7 @@
             </div>
 
 
-<!-- Autoimmune Matches -->
-<div class="matches-section">
-    <div class="chart-header" style="margin-bottom: 20px;">
-        <div>
-            <div class="chart-title">Autoimmune Condition Matches</div>
-            <div class="chart-subtitle">Probability analysis based on symptoms</div>
-        </div>
-    </div>
-    
-    <div class="matches-grid">
-        @foreach($reportData['autoimmuneMatches'] as $condition => $percentage)
-            @php
-                $trueAutoimmune = ['Rheumatoid Arthritis (RA)', 'Lupus (SLE)', 'Sjögren\'s Syndrome', 'Celiac Disease'];
-                $isAutoimmune = in_array($condition, $trueAutoimmune);
-                $matchLevel = $percentage >= 70 ? 'high' : ($percentage >= 40 ? 'moderate' : 'low');
-            @endphp
-            
-            <div class="match-card {{ $isAutoimmune ? 'autoimmune' : 'immune-mediated' }}">
-                <div class="match-header">
-                    <div class="match-disease">{{ $condition }}</div>
-                    <div class="match-type {{ $isAutoimmune ? 'autoimmune' : 'immune' }}">
-                        {{ $isAutoimmune ? 'Autoimmune' : 'Immune-Mediated' }}
-                    </div>
-                </div>
-                <div class="match-percentage">{{ number_format($percentage, 1) }}%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill {{ $matchLevel }}" style="width: {{ $percentage }}%"></div>
-                </div>
-                <div class="match-footer">
-                    <span>Match Probability</span>
-                    <span>{{ ucfirst($matchLevel) }} Match</span>
-                </div>
-            </div>
-        @endforeach
-    </div>
-</div>
+
 
             <!-- Triggers & Recommendations -->
             <div class="charts-section">

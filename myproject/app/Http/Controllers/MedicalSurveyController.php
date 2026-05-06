@@ -42,7 +42,7 @@ public function store(Request $request)
             'impact_on_daily_life' => 'required|integer|min:1|max:10',
 
             // Lifestyle & Diet
-            'diet_description' => 'required|string|min:5|max:5000',
+            'diet_description' => 'nullable|string|min:2|max:5000',
             'sleep_quality' => 'required|integer|min:1|max:10',
             'sleep_duration' => 'required|string|max:50',
             'stress_level' => 'required|integer|min:1|max:10',
@@ -60,11 +60,11 @@ public function store(Request $request)
             'diagnosis_details' => 'nullable|string|max:2000',
 
             // New fields
-            'morning_stiffness' => 'required|string',
+            'morning_stiffness' => 'nullable|string',
             'skin_symptoms' => 'nullable|array',
             'eye_symptoms' => 'required|string',
-            'triggers' => 'nullable|array|max:2', // Max 2 triggers
-            'digestive_pattern' => 'required|string',
+            'triggers' => 'nullable|array', // Max 2 triggers
+            'digestive_pattern' => 'nullable|string',
         ]);
 
         // Calculate BMI
@@ -130,10 +130,57 @@ public function showReport()
         'recommendations' => $analytics->getRecommendations(),
     ];
 
+    $conditionSymptoms = [
+
+    'Lupus (SLE)' => [
+        'Skin Rash',
+        'Fatigue',
+        'Fever',
+        'Hair Loss',
+        'Eye Issues'
+    ],
+
+    'Rheumatoid Arthritis (RA)' => [
+        'Joint Pain',
+        'Morning Stiffness',
+        'Fatigue',
+        'Muscle Pain'
+    ],
+
+    'Sjögren\'s Syndrome' => [
+        'Eye Issues',
+        'Fatigue',
+        'Joint Pain'
+    ],
+
+    'Psoriatic Arthritis' => [
+        'Skin Rash',
+        'Joint Pain',
+        'Morning Stiffness'
+    ],
+
+    'Inflammatory Bowel Disease' => [
+        'Digestive Issues',
+        'Fatigue'
+    ],
+
+    'Celiac Disease' => [
+        'Digestive Issues',
+        'Fatigue'
+    ],
+
+    'Ankylosing Spondylitis' => [
+        'Joint Pain',
+        'Morning Stiffness',
+        'Fatigue'
+    ]
+];
+
     return view('trackreport', [
         'survey' => $latestSurvey,
         'reportData' => $reportData,  // Now it matches your view
         'analytics' => $analytics,    // Optional: keep if you want
+        'conditionSymptoms' => $conditionSymptoms,
     ]);
 }
 

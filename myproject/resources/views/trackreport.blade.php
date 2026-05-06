@@ -143,6 +143,7 @@
     padding: 20px;
     border-radius: 15px;
     text-align: center;
+        min-height: 120px;
 }
 
 /* Keep the badge styles */
@@ -386,116 +387,179 @@
 
 </div>
         </div>
-<!-- Autoimmune Section -->
-<div class="section">
-    <h2 class="section-title">🩺 Autoimmune Analysis</h2>
-    <div class="autoimmune-grid">
-        @foreach($reportData['autoimmuneMatches'] as $condition => $percentage)
-            @php
-                // Define which conditions are true autoimmune (keep original red/pink style)
-                $trueAutoimmune = [
-                    'Rheumatoid Arthritis (RA)',
-                    'Lupus (SLE)', 
-                    'Sjögren\'s Syndrome',
-                    'Celiac Disease'
-                ];
-                
-                // Define which are auto-inflammatory (use new blue style)
-                $autoInflammatory = [
-                    'Psoriatic Arthritis',
-                    'Ankylosing Spondylitis',
-                    'Inflammatory Bowel Disease'
-                ];
-                
-                // Determine the class based on condition
-                if (in_array($condition, $trueAutoimmune)) {
-                    // Keep original red/pink style
-                    $colorClass = 'autoimmune-item-original';
-                    $typeLabel = 'Autoimmune';
-                } elseif (in_array($condition, $autoInflammatory)) {
-                    // Use new blue style
-                    $colorClass = 'autoimmune-item-blue';
-                    $typeLabel = 'Immune-Mediated';
-                } else {
-                    $colorClass = 'autoimmune-item-other';
-                    $typeLabel = 'Other';
-                }
-                
-                $matchLevel = $percentage >= 70 ? 'High Match' : ($percentage >= 40 ? 'Moderate Match' : 'Low Match');
-            @endphp
-            
-            <div class="autoimmune-item {{ $colorClass }}">
-                <div class="condition">
-                    {{ $condition }}
-                    <span class="disease-type-badge">{{ $typeLabel }}</span>
-                </div>
-                <div class="match">{{ number_format($percentage, 1) }}%</div>
-                
-                <span class="match-level-badge">
-                    {{ $matchLevel }}
-                </span>
-                
-                <div class="progress-bar">
-                    <div style="
-                        width: {{ $percentage }}%;
-                        height: 8px;
-                        background: white;
-                        border-radius: 4px;
-                        margin: 10px auto;
-                        max-width: 100%;
-                        opacity: {{ $percentage > 0 ? '1' : '0.3' }};
-                    "></div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-    
-    <!-- Legend -->
-    <div style="margin-top: 30px; text-align: center;">
-        <div style="display: inline-block; background: #f8f9fa; padding: 15px 25px; border-radius: 10px;">
-            <strong>Color Legend:</strong>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center;">
-                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 4px; margin-right: 8px;"></div>
-                    <span>🔴 True Autoimmune (4 conditions)</span>
-                </div>
-                <div style="display: flex; align-items: center;">
-                    <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 4px; margin-right: 8px;"></div>
-                    <span>🔵 Auto-inflammatory/Immune-Mediated (3 conditions)</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    
-        <!-- Medical Disclaimer -->
-        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px 20px; border-radius: 8px; margin-top: 15px;">
-            <div style="display: flex; align-items: flex-start;">
-                <div style="font-size: 1.2em; margin-right: 10px;">⚠️</div>
-                <div>
-                    <strong style="color: #856404;">Important Medical Disclaimer:</strong>
-                    <p style="margin: 8px 0 0 0; color: #856404; font-size: 0.95em;">
-                        These match percentages represent <strong>probability estimates only</strong> based on your survey responses. 
-                        This is <strong>NOT a medical diagnosis</strong>. Autoimmune conditions require professional evaluation 
-                        including blood tests, imaging, and physical examination by a qualified healthcare provider.
-                    </p>
-                    <p style="margin: 8px 0 0 0; color: #856404; font-size: 0.95em;">
-                        <strong>Please consult with a rheumatologist or your primary care physician</strong> for proper diagnosis 
-                        and treatment. Do not make medical decisions based solely on this report.
-                    </p>
-                </div>
+
+        <!-- Autoimmune Section -->
+        <div class="section">
+
+            <h2 class="section-title">🩺 Autoimmune Symptom Overview</h2>
+
+            {{-- PRIMARY CONDITIONS --}}
+            <h3 style="margin-bottom:15px; color:#f5576c;">
+                🩺 Primary Autoimmune Conditions
+            </h3>
+
+            <div class="autoimmune-grid">
+
+                @php
+                    $primaryConditions = [
+                        'Lupus (SLE)',
+                        'Rheumatoid Arthritis (RA)',
+                        'Psoriatic Arthritis'
+                    ];
+                @endphp
+
+                @foreach($primaryConditions as $condition)
+
+                    @php
+                        $userSymptoms = is_string($survey->main_symptoms)
+                            ? json_decode($survey->main_symptoms, true)
+                            : ($survey->main_symptoms ?? []);
+                    @endphp
+
+                    <div class="autoimmune-item-original">
+
+                        <div class="condition">
+                            {{ $condition }}
+                        </div>
+
+                        <div style="margin-top:15px; text-align:left;">
+
+                            <div style="
+                                font-size:0.9em;
+                                font-weight:600;
+                                margin-bottom:10px;
+                            ">
+                                Associated symptoms:
+                            </div>
+
+                            @foreach($conditionSymptoms[$condition] as $symptom)
+
+                                @php
+                                    $coreSymptoms = [
+                                        'Lupus (SLE)' => ['Skin Rash', 'Eye Issues', 'Fever'],
+                                        'Rheumatoid Arthritis (RA)' => ['Joint Pain', 'Morning Stiffness'],
+                                        'Psoriatic Arthritis' => ['Skin Rash'],
+
+                                        'Sjögren\'s Syndrome' => ['Eye Issues'],
+                                        'Ankylosing Spondylitis' => ['Joint Pain'],
+                                        'Inflammatory Bowel Disease' => ['Digestive Issues'],
+                                        'Celiac Disease' => ['Digestive Issues']
+                                    ];
+
+                                    $isSelected =
+                                        in_array($symptom, $userSymptoms) &&
+                                        in_array($symptom, $coreSymptoms[$condition] ?? []);
+                                @endphp
+
+                            <div style="
+                                margin-bottom:8px;
+                                padding:6px 10px;
+                                border-radius:8px;
+                                background: {{ $isSelected ? '#27c96f' : 'rgba(255,255,255,0.08)' }};
+                                color: {{ $isSelected ? '#ffffff' : '#ffffff' }};
+                                font-weight: {{ $isSelected ? '700' : '400' }};
+                            ">
+                                {{ $isSelected ? '✓' : '•' }} {{ $symptom }}
+                            </div>
+
+                            @endforeach
+
+                        </div>
+
+                    </div>
+
+                @endforeach
+
             </div>
+
+            {{-- RELATED CONDITIONS --}}
+            <h3 style="
+                margin-top:40px;
+                margin-bottom:15px;
+                color:#00c6ff;
+            ">
+                🔗 Related Immune-Mediated Conditions
+            </h3>
+
+            <div class="autoimmune-grid">
+
+                @php
+                    $relatedConditions = [
+                        'Sjögren\'s Syndrome',
+                        'Ankylosing Spondylitis',
+                        'Inflammatory Bowel Disease',
+                        'Celiac Disease'
+                    ];
+                @endphp
+
+                @foreach($relatedConditions as $condition)
+
+                    @php
+                        $userSymptoms = is_string($survey->main_symptoms)
+                            ? json_decode($survey->main_symptoms, true)
+                            : ($survey->main_symptoms ?? []);
+                    @endphp
+
+                    <div class="autoimmune-item-blue" style="opacity:0.95;">
+
+                        <div class="condition">
+                            {{ $condition }}
+                        </div>
+
+                        <div style="margin-top:15px; text-align:left;">
+
+                            <div style="
+                                font-size:0.9em;
+                                font-weight:600;
+                                margin-bottom:10px;
+                            ">
+                                Associated symptoms:
+                            </div>
+
+                            @foreach($conditionSymptoms[$condition] as $symptom)
+
+                                @php
+                                    $coreSymptoms = [
+                                        'Lupus (SLE)' => ['Skin Rash', 'Eye Issues', 'Fever'],
+                                        'Rheumatoid Arthritis (RA)' => ['Joint Pain', 'Morning Stiffness'],
+                                        'Psoriatic Arthritis' => ['Skin Rash'],
+
+                                        'Sjögren\'s Syndrome' => ['Eye Issues'],
+                                        'Ankylosing Spondylitis' => ['Joint Pain'],
+                                        'Inflammatory Bowel Disease' => ['Digestive Issues'],
+                                        'Celiac Disease' => ['Digestive Issues']
+                                    ];
+
+                                    $isSelected =
+                                        in_array($symptom, $userSymptoms) &&
+                                        in_array($symptom, $coreSymptoms[$condition] ?? []);
+                                @endphp
+
+                            <div style="
+                                margin-bottom:8px;
+                                padding:6px 10px;
+                                border-radius:8px;
+                                background: {{ $isSelected ? '#27c96f' : 'rgba(255,255,255,0.08)' }};
+                                color: {{ $isSelected ? '#ffffff' : '#ffffff' }};
+                                font-weight: {{ $isSelected ? '700' : '400' }};
+                            ">
+                                    {{ $isSelected ? '✔' : '•' }} {{ $symptom }}
+                                </div>
+
+                            @endforeach
+
+                        </div>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
         </div>
+
         
-        <!-- Call to Action -->
-        <div style="text-align: center; margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
-            <p style="color: white; margin: 0; font-weight: 600; font-size: 1.1em;">
-                📋 <strong>Next Step:</strong> Share these results with your doctor for professional evaluation
-            </p>
-        </div>
-
-</div>
-
         <!-- Charts Section -->
         <div class="section">
             <h2 class="section-title">📈 Health Metrics</h2>
@@ -556,25 +620,43 @@
                             @endforeach
                     @endif
                     @foreach($reportData['triggers'] as $trigger => $data)
-                    <div class="symptom-item">
-                        <span>{{ $trigger }}</span>
-                        <div>
-                            @php
-                                $score = $data['score'] ?? $data; // Handle both array and number
-                                $level = $data['level'] ?? ($score >= 7 ? 'High' : ($score >= 4 ? 'Medium' : 'Low'));
-                                $color = $score >= 7 ? '#ff4757' : ($score >= 4 ? '#ffa502' : '#2ed573');
-                            @endphp
-                            <span style="color: {{ $color }}; font-weight: 600;">
-                                {{ $level }} ({{ $score }}/10)
-                            </span>
-                            @if(isset($data['tip']))
-                            <div style="font-size: 0.8em; color: #666; margin-top: 5px;">
-                                💡 {{ $data['tip'] }}
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    @endforeach
+
+    @php
+        $score = $data['score'] ?? $data;
+        $level = $data['level'] ?? ($score >= 7 ? 'High' : ($score >= 4 ? 'Medium' : 'Low'));
+        $color = $score >= 7 ? '#ff4757' : ($score >= 4 ? '#ffa502' : '#2ed573');
+    @endphp
+
+    <div style="
+        padding: 10px 0;
+        border-bottom: 1px dashed #ddd;
+    ">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        ">
+            <span>{{ $trigger }}</span>
+
+            <span style="color: {{ $color }}; font-weight: 600;">
+                {{ $level }} ({{ $score }}/10)
+            </span>
+        </div>
+
+        @if(strtolower($trigger) == 'food' && !empty($survey->diet_description))
+        <div style="
+            margin-top:6px;
+            font-size:0.85em;
+            color:#e84393;
+        ">
+            🍽 Reported trigger foods: {{ $survey->diet_description }}
+        </div>
+        @endif
+
+    </div>
+
+@endforeach
                 </div>
 
                 <!-- Lifestyle -->

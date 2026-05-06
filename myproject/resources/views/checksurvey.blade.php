@@ -492,7 +492,7 @@
                         <div class="checkbox-item">
                             <input type="checkbox" name="triggers[]" value="food"
                                 {{ in_array('food', old('triggers', [])) ? 'checked' : '' }}>
-                            <label>Specific foods</label>
+                            <label>Food-related triggers</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" name="triggers[]" value="infection"
@@ -521,6 +521,37 @@
                         </div>
                     </div>
                 </div>
+
+                
+                <!-- stress trigger -->
+                <div class="form-group" id="stressTriggerSection" style="display:none;">
+                    <label>Stress Level (1-10) <span class="required">*</span></label>
+                    <div class="slider-container">
+                        <input type="range" name="stress_level" min="1" max="10" value="{{ old('stress_level', 5) }}"
+                               oninput="document.getElementById('stressValue').textContent = this.value">
+                        <span class="slider-value">Current: <span id="stressValue">{{ old('stress_level', 5) }}</span>/10</span>
+                        <div class="scale-labels">
+                            <span>1 (No stress)</span>
+                            <span>10 (Extreme stress)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- food trigger -->
+                <div class="form-group" id="foodTriggerSection" style="display:none;">
+                    <h2 class="section-title">🥗 Diet</h2>
+                    <label>Foods That May Trigger Symptoms</label>
+                        <textarea
+                            name="diet_description"
+                            placeholder="Example: Dairy, spicy food, seafood, processed food..."
+                        >{{ old('diet_description') }}</textarea>
+
+                        <small style="color:#666;">
+                            Describe foods that seem to worsen your symptoms.
+                        </small>
+
+                    </div>
+
 
                 <div class="form-group">
                     <label>Symptom Duration <span class="required">*</span></label>
@@ -586,17 +617,11 @@
             </div>
             
 
-            
-
             <!-- Section 3: Lifestyle & Diet -->
             <div class="form-section">
-                <h2 class="section-title">🥗 Lifestyle & Diet</h2>
+                <h2 class="section-title">🥗 Lifestyle</h2>
 
-                <div class="form-group">
-                    <label>Describe your typical diet <span class="required">*</span></label>
-                    <textarea name="diet_description" required placeholder="What do you typically eat in a day? Include breakfast, lunch, dinner, snacks...">{{ old('diet_description') }}</textarea>
-                    <small style="color: #666;">Please provide at least 50 characters for better analysis</small>
-                </div>
+
 
                 <div class="form-group">
                     <label>Sleep Quality (1-10) <span class="required">*</span></label>
@@ -623,18 +648,6 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>Stress Level (1-10) <span class="required">*</span></label>
-                    <div class="slider-container">
-                        <input type="range" name="stress_level" min="1" max="10" value="{{ old('stress_level', 5) }}"
-                               oninput="document.getElementById('stressValue').textContent = this.value">
-                        <span class="slider-value">Current: <span id="stressValue">{{ old('stress_level', 5) }}</span>/10</span>
-                        <div class="scale-labels">
-                            <span>1 (No stress)</span>
-                            <span>10 (Extreme stress)</span>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <label>Daily Water Consumption (glasses) <span class="required">*</span></label>
@@ -645,6 +658,18 @@
                                 {{ $i }} {{ $i == 1 ? 'glass' : 'glasses' }}
                             </option>
                         @endfor
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Physical Activity Level <span class="required">*</span></label>
+                    <select name="physical_activity_level" required>
+                        <option value="">Select</option>
+                        <option value="Sedentary" {{ old('physical_activity_level') == 'Sedentary' ? 'selected' : '' }}>Sedentary (little to no exercise)</option>
+                        <option value="Light" {{ old('physical_activity_level') == 'Light' ? 'selected' : '' }}>Light (1-2 days/week)</option>
+                        <option value="Moderate" {{ old('physical_activity_level') == 'Moderate' ? 'selected' : '' }}>Moderate (3-5 days/week)</option>
+                        <option value="Active" {{ old('physical_activity_level') == 'Active' ? 'selected' : '' }}>Active (daily exercise)</option>
+                        <option value="Athlete" {{ old('physical_activity_level') == 'Athlete' ? 'selected' : '' }}>Athlete (intense training)</option>
                     </select>
                 </div>
             </div>
@@ -672,18 +697,6 @@
                         <option value="Occasionally" {{ old('alcohol_consumption') == 'Occasionally' ? 'selected' : '' }}>Occasionally</option>
                         <option value="Moderately" {{ old('alcohol_consumption') == 'Moderately' ? 'selected' : '' }}>Moderately</option>
                         <option value="Heavily" {{ old('alcohol_consumption') == 'Heavily' ? 'selected' : '' }}>Heavily</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Physical Activity Level <span class="required">*</span></label>
-                    <select name="physical_activity_level" required>
-                        <option value="">Select</option>
-                        <option value="Sedentary" {{ old('physical_activity_level') == 'Sedentary' ? 'selected' : '' }}>Sedentary (little to no exercise)</option>
-                        <option value="Light" {{ old('physical_activity_level') == 'Light' ? 'selected' : '' }}>Light (1-2 days/week)</option>
-                        <option value="Moderate" {{ old('physical_activity_level') == 'Moderate' ? 'selected' : '' }}>Moderate (3-5 days/week)</option>
-                        <option value="Active" {{ old('physical_activity_level') == 'Active' ? 'selected' : '' }}>Active (daily exercise)</option>
-                        <option value="Athlete" {{ old('physical_activity_level') == 'Athlete' ? 'selected' : '' }}>Athlete (intense training)</option>
                     </select>
                 </div>
             </div>
@@ -736,6 +749,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const skinSection = document.getElementById('skinSection');
     const eye = document.getElementById('eyeIssue');
     const digestiveSection = document.getElementById('digestiveSection');
+    const foodTriggerSection = document.getElementById('foodTriggerSection');
+    const triggerFood = document.querySelector('input[value="food"]');
+    const stressTriggerSection = document.getElementById('stressTriggerSection');
+    const triggerStress = document.querySelector('input[value="stress"]');
 
     function filterSymptoms() {
 
@@ -805,7 +822,19 @@ document.addEventListener('DOMContentLoaded', function () {
         digestiveSection.style.display = digestive.checked ? 'block' : 'none';
     }
 
+        function toggleTriggerSections() {
+
+            foodTriggerSection.style.display =
+                triggerFood.checked ? 'block' : 'none';
+
+            stressTriggerSection.style.display =
+                triggerStress.checked ? 'block' : 'none';
+        }
+
     document.querySelectorAll('input[name="triggers[]"]').forEach(cb => {
+
+            cb.addEventListener('change', toggleTriggerSections);
+
             cb.addEventListener('change', function () {
 
                 if (this.value === 'none' && this.checked) {
@@ -828,6 +857,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // run on load (for old value)
     toggleSections();
+    toggleTriggerSections();
 
             const successAlert = document.getElementById('successAlert');
         const errorAlert = document.getElementById('errorAlert');
@@ -858,12 +888,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 isValid = false;
             }
 
-            // 3. Validate triggers (max 2)
             const triggerCheckboxes = document.querySelectorAll('input[name="triggers[]"]:checked');
-            if (triggerCheckboxes.length > 2) {
-                alert('Please select maximum 2 triggers only.');
-                isValid = false;
-            }
 
             // 4. Validate at least one trigger OR "none" is selected
             if (triggerCheckboxes.length === 0) {
@@ -880,32 +905,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // 6. Validate morning stiffness is selected
-            if (joint.checked && joint.offsetParent !== null) {
-                const morningStiffness = document.querySelector('[name="morning_stiffness"]').value;
-                if (!morningStiffness) {
-                    alert('Please select morning stiffness duration.');
-                    isValid = false;
-                }
-            }
-
-            // 7. Validate eye symptoms is selected
-            if (eye.checked) {
-                const eyeSymptoms = document.querySelector('[name="eye_symptoms"]').value;
-                if (!eyeSymptoms) {
-                    alert('Please select eye symptoms.');
-                    isValid = false;
-                }
-            }
-
-            // 8. Validate digestive pattern is selected
-            if (digestive.checked) {
-                const digestivePattern = document.querySelector('[name="digestive_pattern"]').value;
-                if (!digestivePattern) {
-                    alert('Please select digestive pattern.');
-                    isValid = false;
-                }
-            }
 
             // If any validation failed, prevent form submission
             if (!isValid) {
