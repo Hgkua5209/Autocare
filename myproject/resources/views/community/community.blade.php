@@ -52,7 +52,11 @@
 
             <!-- CONTENT -->
             <div class="post-content">
-                {{ $post->content }}
+                {!! preg_replace(
+                    '/#(\w+)/',
+                    '<span class="hashtag">#$1</span>',
+                    e($post->content)
+                ) !!}
             </div>
 
             <!-- ACTION ROW -->
@@ -96,7 +100,7 @@
                 </div>
 
                 <!-- RIGHT (DELETE) -->
-                @if($post->user_id == auth()->id() || auth()->user()->role == 'admin')
+                @if(auth()->user()->role == 'admin')
                 <form method="POST" action="{{ route('post.delete', $post->post_id) }}">
                     @csrf
                     @method('DELETE')
@@ -146,7 +150,23 @@
 
             <!-- CONTENT -->
             <div class="post-content">
-                {{ $post->content }}
+
+                @php
+                    preg_match_all('/#(\w+)/', $post->content, $hashtags);
+
+                    $cleanContent = preg_replace('/#(\w+)/', '', $post->content);
+                @endphp
+
+                <p>{{ trim($cleanContent) }}</p>
+
+                @if(count($hashtags[0]) > 0)
+                    <div class="hashtags">
+                        @foreach($hashtags[0] as $tag)
+                            <span class="hashtag">{{ $tag }}</span>
+                        @endforeach
+                    </div>
+                @endif
+
             </div>
 
             <!-- ACTION ROW -->
@@ -237,7 +257,23 @@
             </div>
 
             <div class="post-content">
-                {{ $post->content }}
+
+                @php
+                    preg_match_all('/#(\w+)/', $post->content, $hashtags);
+
+                    $cleanContent = preg_replace('/#(\w+)/', '', $post->content);
+                @endphp
+
+                <p>{{ trim($cleanContent) }}</p>
+
+                @if(count($hashtags[0]) > 0)
+                    <div class="hashtags">
+                        @foreach($hashtags[0] as $tag)
+                            <span class="hashtag">{{ $tag }}</span>
+                        @endforeach
+                    </div>
+                @endif
+
             </div>
 
             <div class="post-actions">
@@ -718,6 +754,20 @@ function toggleComment(id) {
 .commented {
     font-variation-settings: 'FILL' 1;
     color: #6366f1;
+}
+
+.hashtag{
+    display: inline-block;
+    margin-top: 6px;
+    margin-right: 5px;
+    padding: 4px 10px;
+
+    background: #f1f5f9;
+    color: #64748b;
+
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
 }
 </style>
 

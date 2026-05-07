@@ -204,7 +204,7 @@ input::placeholder {
 /* CONTENT */
 .day-content {
     flex: 1;
-    background: #2c2c2c;
+    background: linear-gradient(135deg, #4a4277, #6a5acd);
     padding: 40px;
     border-radius: 16px;
     color: white;

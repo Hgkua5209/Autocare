@@ -364,9 +364,14 @@ body {
 
     <!-- TOP -->
     <div class="top-actions">
-        <button class="btn-create" onclick="window.location='{{ route('treatment.create') }}'">+ Create Treatment</button>
+        <button
+            class="btn-create"
+            style="{{ Auth::user()->role != 'admin' ? 'visibility:hidden;' : '' }}"
+            onclick="window.location='{{ route('treatment.create') }}'">
 
-        <div class="title">Treatment Hub</div>
+            + Create Care Plan
+        </button>
+        <div class="title">Care Hub</div>
 
         <input
             type="text"
@@ -381,14 +386,13 @@ body {
     <button class="filter-btn" data-filter="lupus">Lupus</button>
     <button class="filter-btn" data-filter="psoriasis">Psoriasis</button>
     <button class="filter-btn" data-filter="rheumatoid arthritis">Rheumatoid Arthritis</button>
-    <button class="filter-btn" data-filter="hashimoto">Hashimoto</button>
-    <button class="filter-btn" data-filter="celiac">Celiac</button>
+
 </div>
 
     <!-- 🚨 EMERGENCY -->
 <div class="section emergency-section">
 
-    <h2 class="section-title emergency-title">Emergency Treatment</h2>
+    <h2 class="section-title emergency-title">Priority Care</h2>
 
     <div class="treatment-grid">
 
@@ -464,7 +468,7 @@ onclick="openModal(
     <!-- ⭐ RECOMMENDED -->
 <div class="section recommended-section">
 
-    <h2 class="section-title recommended-title">Recommended Treatment</h2>
+    <h2 class="section-title recommended-title">Recommended Care</h2>
 
     <div class="treatment-grid">
 

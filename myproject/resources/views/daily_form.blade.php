@@ -25,12 +25,12 @@
         </div>
 
         <div class="form-group">
-            <label>Water Intake</label>
+            <label>Water Intake (Glass)</label>
             <input type="number" name="water_intake">
         </div>
 
         <div class="form-group">
-            <label>Activity Level</label>
+            <label>Physical Activity Level</label>
             <select name="activity_level">
                 <option>Low</option>
                 <option>Moderate</option>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            <label>Food Intake</label>
+            <label>Food and meals Intake</label>
             <input type="text" name="food_intake" placeholder="e.g. Rice, chicken">
         </div>
 
@@ -78,7 +78,7 @@
 
 .form-grid {
     display: grid;
-    background: rgba(255,255,255,0.03);
+    background:  linear-gradient(135deg, #6a5acd, #7b68ee);
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     margin-top: 20px;

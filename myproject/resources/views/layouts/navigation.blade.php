@@ -26,7 +26,7 @@
 
         <a href="{{ route('treatment') }}" class="nav-item {{ request()->routeIs('treatment') ? 'active' : '' }}">
             <i class="fas fa-pills"></i>
-            <span>Treatment Hub</span>
+            <span>Care Hub</span>
         </a>
 
         <a href="{{ route('food.hub') }}" class="nav-item {{ request()->routeIs('food.hub') ? 'active' : '' }}">
