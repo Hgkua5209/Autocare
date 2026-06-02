@@ -16,12 +16,12 @@
 
         <a href="{{ route('medical.survey') }}" class="nav-item {{ request()->routeIs('medical.survey') ? 'active' : '' }}">
             <i class="fas fa-user-md"></i>
-            <span>Check condition</span>
+            <span>Condition Survey</span>
         </a>
 
         <a href="{{ route('daily') }}" class="nav-item">
             <i class="fas fa-chart-line"></i>
-            <span>Health Trends</span>
+            <span>Health Journey</span>
         </a>
 
         <a href="{{ route('treatment') }}" class="nav-item {{ request()->routeIs('treatment') ? 'active' : '' }}">
@@ -36,7 +36,7 @@
 
         <a href="{{ route('community') }}" class="nav-item">
             <i class="fas fa-calendar-check"></i>
-            <span>Community</span>
+            <span>Community Feed</span>
         </a>
 
         <a href="#" class="nav-item">
