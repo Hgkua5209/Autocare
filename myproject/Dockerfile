@@ -35,14 +35,18 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 # Copy application files from the repository
 COPY . .
 
+RUN touch .env
+
 # Run composer install to generate the vendor directory (optimized for production)
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Copy the compiled assets over from the Node stage
 COPY --from=node-builder /app/public/build ./public/build
 
-# Set correct folder permissions for Laravel storage
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Set correct folder permissions for the entire web directory
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
 # Expose port 80 for public traffic
 EXPOSE 80
