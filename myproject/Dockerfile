@@ -24,8 +24,10 @@ RUN apt-get update && apt-get install -y \
 # Install Composer globally inside the container
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Enable Apache mod_rewrite for Laravel routing
-RUN a2enmod rewrite
+# Fix the conflicting Multi-Processing Modules (MPMs) error
+RUN a2dismod mpm_event || true \
+    && a2enmod mpm_prefork \
+    && a2enmod rewrite
 
 # Change Apache document root to Laravel's public folder
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
