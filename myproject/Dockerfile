@@ -10,15 +10,19 @@ RUN npm run build
 FROM php:8.3-apache
 WORKDIR /var/www/html
 
-# Install system dependencies and PHP extensions for MySQL
+# Install system dependencies, zip tools, and PHP extensions for MySQL
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     zip \
     unzip \
+    git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql
+
+# Install Composer globally inside the container
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Enable Apache mod_rewrite for Laravel routing
 RUN a2enmod rewrite
@@ -30,6 +34,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 
 # Copy application files from the repository
 COPY . .
+
+# Run composer install to generate the vendor directory (optimized for production)
+RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Copy the compiled assets over from the Node stage
 COPY --from=node-builder /app/public/build ./public/build
