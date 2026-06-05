@@ -17,3 +17,4 @@ class Treatment extends Model
         'category'
     ];
 }
+
