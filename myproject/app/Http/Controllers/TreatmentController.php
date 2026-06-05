@@ -8,21 +8,20 @@ use App\Models\Treatment;
 class TreatmentController extends Controller
 {
     // 🔥 Display treatment page
-public function index()
-{
-    $treatments = Treatment::all();
+    public function index()
+    {
+        $treatments = Treatment::all();
 
+        // 🔥 This line extracts unique non-empty disease names
+        $diseases = Treatment::distinct()->pluck('disease_name')->filter()->toArray();
 
-    // 🔥 This line solves the "Undefined variable" error
-    // It looks at the 'disease_name' column and gets one of each unique name
-    $diseases = Treatment::distinct()->pluck('disease_name')->filter()->toArray();
+        // pecahkan ikut category
+        $emergency = $treatments->where('category', 'emergency');
+        $recommended = $treatments->where('category', 'recommended');
 
-    // pecahkan ikut category
-    $emergency = $treatments->where('category', 'emergency');
-    $recommended = $treatments->where('category', 'recommended');
-
-    return view('treatment.treatment', compact('treatments', 'emergency', 'recommended'));
-}
+        // ✅ FIXED: Added 'diseases' to the compact array so your view can see it!
+        return view('treatment.treatment', compact('treatments', 'emergency', 'recommended', 'diseases'));
+    }
 
     // 🔥 Show create form
     public function create()
