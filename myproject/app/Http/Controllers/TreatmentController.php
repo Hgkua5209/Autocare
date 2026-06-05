@@ -19,7 +19,7 @@ class TreatmentController extends Controller
         $emergency = $treatments->where('category', 'emergency');
         $recommended = $treatments->where('category', 'recommended');
 
-        // ✅ FIXED: Added 'diseases' to the compact array so your view can see it!
+        // FIXED: Added 'diseases' to the compact array so your view can see it!
         return view('treatment.treatment', compact('treatments', 'emergency', 'recommended', 'diseases'));
     }
 
