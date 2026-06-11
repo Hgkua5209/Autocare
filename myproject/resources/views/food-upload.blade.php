@@ -121,7 +121,7 @@
                 <input name="fiber" value="{{ old('fiber') }}" placeholder="Fiber" class="border p-2 rounded">
             </div>
 
-            <script>
+            <!-- <script>
                 document.querySelector('select[name="recommendation_type"]').addEventListener('change', function() {
                     const isAvoid = this.value === 'Avoid';
                     const nutritionSection = document.getElementById('nutrition-section');
@@ -139,7 +139,7 @@
                         notesField.setAttribute('required', 'required');
                     }
                 });
-            </script>
+            </script> -->
 
             <div class="bg-red-50 border border-red-200 p-6 rounded-xl space-y-4">
                 <h3 class="font-semibold text-red-700">Research Evidence (Optional)</h3>
