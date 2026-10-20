@@ -98,10 +98,12 @@ Route::post('/save/{id}', [CommunityController::class, 'save'])->name('save');
 
 // Treatment
 Route::get('/treatment', [TreatmentController::class, 'index'])->name('treatment');
-Route::get('/treatment/create', function () {
-    return view('treatment.create');
-})->name('treatment.create');
-Route::post('/treatment/store', [TreatmentController::class, 'store'])->name('treatment.store');
+
+// Creating care plans is admin-only (previously open to anyone, even logged out).
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/treatment/create', [TreatmentController::class, 'create'])->name('treatment.create');
+    Route::post('/treatment/store', [TreatmentController::class, 'store'])->name('treatment.store');
+});
 
 // Medical Survey Routes (accessible without auth if you want public submissions)
 Route::get('/checksurvey', [MedicalSurveyController::class, 'showSurvey'])->name('checksurvey');
