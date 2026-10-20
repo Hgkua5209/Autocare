@@ -2,718 +2,143 @@
 
 @section('content')
 
-<style>
-body {
-    background:#f1f5f9;
-}
-
-/* CONTAINER */
-.treatment-container {
-    padding: 20px;
-}
-
-/* TOP */
-.top-actions {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.btn-create {
-    justify-self: start;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-}
-
-.page-title {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    color: white;
-}
-
-.search-box {
-    justify-self: end;
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: none;
-    width: 250px;
-}
-        .dashboard-footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--gray);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--gray-light);
-            margin-top: 30px;
-        }
-
-        .footer-warning {
-    font-size: 0.8rem;
-    margin-top: 5px;
-    color: #ef4444; /* 🔥 merah */
-}
-
-/* SECTION STYLE */
-.section {
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-}
-
-/* 🚨 EMERGENCY */
-.emergency-section {
-    background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05));
-    border: 1px solid rgba(239,68,68,0.3);
-}
-
-.emergency-title {
-    color: #f87171;
-}
-
-/* ⭐ RECOMMENDED */
-.recommended-section {
-    background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(102,126,234,0.05));
-    border: 1px solid rgba(102,126,234,0.3);
-}
-
-.recommended-title {
-    color: #a5b4fc;
-}
-
-/* TITLE */
-.section-title {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-/* GRID */
-.treatment-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-}
-
-/* CARD */
-.treatment-card {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 20px;
-    transition: 0.3s;
-}
-
-.treatment-card:hover {
-    transform: translateY(-5px);
-}
-
-/* DIFFERENT BORDER */
-.emergency-card {
-    border-left: 5px solid #ef4444;
-}
-
-.recommended-card {
-    border-left: 5px solid #667eea;
-}
-
-.treatment-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-.treatment-type {
-    display: inline-block;
-    margin: 10px 0;
-    padding: 5px 10px;
-    background: #c7d2fe;
-    border-radius: 20px;
-    font-size: 0.8rem;
-}
-
-.treatment-desc {
-    color: #475569;
-    margin-bottom: 10px;
-}
-
-.treatment-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-}
-.title {
-    width: 100%;
-    text-align: center;
-    font-size: 28px;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 20px 0;
-}
-/* SEE MORE */
-.see-more {
-    margin-top: 15px;
-    color: #fc6363;
-    cursor: pointer;
-    text-align: right;
-}
-
-/* popup details */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
-}
-
-.modal-content {
-    background: #ffffff;
-    margin: 5% auto;
-    padding: 30px;
-    width: 550px;
-    max-height: 80vh;
-    overflow-y: auto;
-
-    border-radius: 20px;
-    position: relative;
-
-    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
-}
-
-
-.close-btn {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 22px;
-    cursor: pointer;
-}
-
-/* Title */
-#modalTitle {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-/* Section */
-.modal-section {
-    margin-bottom: 18px;
-}
-
-/* Section label */
-.modal-section h4 {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #94a3b8;
-    margin-bottom: 6px;
-}
-
-/* Content text */
-.modal-section p {
-    font-size: 15px;
-    color: #334155;
-    line-height: 1.6;
-}
-
-/* Steps box */
-#modalSteps {
-    white-space: pre-line;
-    background: #f1f5f9;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    color: #1e293b;
-}
-
-/* steps formatting */
-#modalSteps {
-    white-space: pre-line;
-    background: #f8fafc;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-/* button */
-.full-page-btn {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 12px;
-
-    cursor: pointer;
-}
-
-.meta-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-/* base badge */
-.badge {
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-/* type */
-.badge.type {
-    background: #e0e7ff;
-    color: #4338ca;
-}
-
-/* ===== LEVEL ===== */
-.level-high {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.level-mid {
-    background: #fef3c7;
-    color: #d97706;
-}
-
-.level-easy {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-/* ===== CATEGORY ===== */
-.cat-emergency {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.cat-recommended {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-/* ===== LEVEL ===== */
-.level-high {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.level-mid {
-    background: #fef3c7;
-    color: #d97706;
-}
-
-.level-easy {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-/* ===== CATEGORY ===== */
-.cat-emergency {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.cat-recommended {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-/* ===== research ===== */
-.research-link {
-    display: inline-block;
-    margin-top: 5px;
-    color: #667eea;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.research-link:hover {
-    text-decoration: underline;
-}
-
-.filter-container { margin-bottom: 30px; }
-    .filter-btn {
-        padding: 8px 20px;
-        border-radius: 25px;
-        background: #fff;
-        border: 1px solid #e2e8f0;
-        color: #64748b;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
-    .filter-btn.active {
-        background: #667eea;
-        color: white;
-        border-color: #667eea;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
-</style>
-
-<div class="treatment-container">
-
-    <!-- TOP -->
-    <div class="top-actions">
-        <button
-            class="btn-create"
-            style="{{ Auth::user()->role != 'admin' ? 'visibility:hidden;' : '' }}"
-            onclick="window.location='{{ route('treatment.create') }}'">
-
-            + Create Care Plan
-        </button>
-        <div class="title">Care Hub</div>
-
-        <input
-            type="text"
-            placeholder="Search treatment..."
-            class="search-box"
-            id="searchInput"
-        >
-    </div>
-
-<div class="filter-container mb-8 flex flex-wrap justify-center gap-2">
-    <button class="filter-btn active" data-filter="all">All Diseases</button>
-    <button class="filter-btn" data-filter="lupus">Lupus</button>
-    <button class="filter-btn" data-filter="psoriasis">Psoriasis</button>
-    <button class="filter-btn" data-filter="rheumatoid arthritis">Rheumatoid Arthritis</button>
-
-</div>
-
-    <!-- 🚨 EMERGENCY -->
-<div class="section emergency-section">
-
-    <h2 class="section-title emergency-title">Priority Care</h2>
-
-    <div class="treatment-grid">
-
-        {{-- SHOW FIRST 3 --}}
-        @foreach($emergency->take(3) as $item)
-<div class="treatment-card emergency-card searchable"
-     data-disease="{{ strtolower($item->disease_name) }}"
-     data-title="{{ strtolower($item->title) }}"
-     data-type="{{ strtolower($item->type) }}"
-     data-desc="{{ strtolower($item->description) }}">
-            <h3 class="treatment-title">{{ $item->title }}</h3>
-
-            <span class="treatment-type">{{ $item->type }}</span>
-
-            <p class="treatment-desc">{{ $item->description }}</p>
-
-            <div class="treatment-footer">
-                <span>Level: {{ $item->level }}</span>
-<span class="view-btn"
-onclick="openModal(
-    `{{ $item->title }}`,
-    `{{ $item->type }}`,
-    `{{ $item->level }}`,
-    `{{ $item->category }}`,
-    `{{ addslashes($item->description) }}`,
-    `{{ addslashes($item->research) }}`,
-    `{{ addslashes($item->steps) }}`
-)">
-    View
-</span>
-            </div>
+@include('treatment.partials.styles')
+
+<div class="carehub">
+
+    {{-- HEADER --}}
+    <div class="ch-header">
+        <div>
+            <h1 class="ch-title">Care Hub</h1>
+            <p class="ch-subtitle">Care plans for managing flares and day-to-day symptoms.</p>
         </div>
-        @endforeach
 
-        {{-- HIDDEN EXTRA --}}
-        @foreach($emergency->skip(3) as $item)
-        <div class="treatment-card emergency-card extra-card" style="display:none;">
-            <h3 class="treatment-title">{{ $item->title }}</h3>
+        @if(auth()->check() && auth()->user()->role === 'admin')
+            <a class="btn-create" href="{{ route('treatment.create') }}">+ Create Care Plan</a>
+        @endif
+    </div>
 
-            <span class="treatment-type">{{ $item->type }}</span>
+    <div class="ch-disclaimer" role="note">
+        <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+        <span>
+            This information is educational and does not replace professional medical advice.
+            If you have severe or sudden symptoms, contact your doctor or local emergency services.
+        </span>
+    </div>
 
-            <p class="treatment-desc">{{ $item->description }}</p>
-
-            <div class="treatment-footer">
-                <span>Level: {{ $item->level }}</span>
-<span class="view-btn"
-onclick="openModal(
-    `{{ $item->title }}`,
-    `{{ $item->type }}`,
-    `{{ $item->level }}`,
-    `{{ $item->category }}`,
-    `{{ addslashes($item->description) }}`,
-    `{{ addslashes($item->research) }}`,
-    `{{ addslashes($item->steps) }}`
-)">
-    View
-</span>
-            </div>
+    {{-- TOOLBAR --}}
+    <div class="ch-toolbar">
+        <div class="ch-search">
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" id="searchInput" placeholder="Search by title, type or condition..." aria-label="Search care plans" autocomplete="off">
         </div>
+
+        <select id="levelSelect" class="ch-select" aria-label="Filter by level">
+            <option value="all">All levels</option>
+            <option value="high">High</option>
+            <option value="moderate">Moderate</option>
+            <option value="low">Low / Easy</option>
+        </select>
+
+        <span class="ch-count" id="resultCount" aria-live="polite"></span>
+    </div>
+
+    {{-- DISEASE FILTER (built from the database) --}}
+    <div class="filter-container" role="group" aria-label="Filter by condition">
+        <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">All Conditions</button>
+        @foreach($diseases as $disease)
+            <button type="button" class="filter-btn" data-filter="{{ strtolower($disease) }}" aria-pressed="false">{{ $disease }}</button>
         @endforeach
-
     </div>
 
-    {{-- SEE MORE BUTTON --}}
-    @if($emergency->count() > 3)
-    <div class="see-more" onclick="toggleEmergency()">
-        See More ↓
-    </div>
+    @if($treatments->isEmpty())
+        <div class="ch-empty">
+            <i class="fas fa-box-open fa-2x" aria-hidden="true"></i>
+            <p>No care plans yet.@if(auth()->check() && auth()->user()->role === 'admin') Click "Create Care Plan" to add one.@endif</p>
+        </div>
+    @else
+
+        {{-- PRIORITY CARE --}}
+        @if($emergency->isNotEmpty())
+        <section class="ch-section emergency-section" data-expanded="0">
+            <div class="ch-section-head">
+                <h2 class="ch-section-title emergency-title"><i class="fas fa-circle-exclamation" aria-hidden="true"></i> Priority Care</h2>
+                <span class="ch-section-note">For flares and urgent symptoms</span>
+            </div>
+
+            <div class="ch-grid">
+                @foreach($emergency as $item)
+                    @include('treatment.partials.card', ['item' => $item, 'variant' => 'emergency', 'extra' => $loop->index >= 3])
+                @endforeach
+            </div>
+
+            @if($emergency->count() > 3)
+                <button type="button" class="ch-toggle" aria-expanded="false">Show all {{ $emergency->count() }} &darr;</button>
+            @endif
+        </section>
+        @endif
+
+        {{-- RECOMMENDED CARE --}}
+        @if($recommended->isNotEmpty())
+        <section class="ch-section recommended-section" data-expanded="0">
+            <div class="ch-section-head">
+                <h2 class="ch-section-title recommended-title"><i class="fas fa-heart-pulse" aria-hidden="true"></i> Recommended Care</h2>
+                <span class="ch-section-note">Everyday habits and long-term management</span>
+            </div>
+
+            <div class="ch-grid">
+                @foreach($recommended as $item)
+                    @include('treatment.partials.card', ['item' => $item, 'variant' => 'recommended', 'extra' => $loop->index >= 6])
+                @endforeach
+            </div>
+
+            @if($recommended->count() > 6)
+                <button type="button" class="ch-toggle" aria-expanded="false">Show all {{ $recommended->count() }} &darr;</button>
+            @endif
+        </section>
+        @endif
+
+        <div class="ch-empty" id="noResults" hidden>
+            <i class="fas fa-magnifying-glass fa-2x" aria-hidden="true"></i>
+            <p>No care plans match your search. Try a different keyword or clear the filters.</p>
+        </div>
+
     @endif
 
-</div>
+    {{-- DETAILS MODAL --}}
+    <div id="treatmentModal" class="ch-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="ch-modal-content">
+            <button type="button" class="ch-close" data-close aria-label="Close">&times;</button>
 
-    <!-- ⭐ RECOMMENDED -->
-<div class="section recommended-section">
+            <h2 id="modalTitle"></h2>
 
-    <h2 class="section-title recommended-title">Recommended Care</h2>
-
-    <div class="treatment-grid">
-
-        @foreach($recommended as $item)
-<div class="treatment-card recommended-card searchable"
-     data-disease="{{ strtolower($item->disease_name) }}"
-     data-title="{{ strtolower($item->title) }}"
-     data-type="{{ strtolower($item->type) }}"
-     data-desc="{{ strtolower($item->description) }}">
-            <h3 class="treatment-title">{{ $item->title }}</h3>
-
-            <span class="treatment-type">{{ $item->type }}</span>
-
-            <p class="treatment-desc">{{ $item->description }}</p>
-
-            <div class="treatment-footer">
-                <span>Level: {{ $item->level }}</span>
-<span class="view-btn"
-onclick="openModal(
-    `{{ $item->title }}`,
-    `{{ $item->type }}`,
-    `{{ $item->level }}`,
-    `{{ $item->category }}`,
-    `{{ addslashes($item->description) }}`,
-    `{{ addslashes($item->research) }}`,
-    `{{ addslashes($item->steps) }}`
-)">
-    View
-</span>
+            <div class="ch-meta">
+                <span class="ch-badge type" id="modalType"></span>
+                <span class="ch-badge" id="modalLevel"></span>
+                <span class="ch-badge" id="modalCategory"></span>
             </div>
-        </div>
-        @endforeach
 
-    </div>
-</div>
-
-@if($treatments->isEmpty())
-    <p style="text-align:center; color:#94a3b8;">
-        No treatments yet. Click "Create Treatment" to add one.
-    </p>
-@endif
-
-        <!-- popup details -->
-<div id="treatmentModal" class="modal">
-    <div class="modal-content">
-
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-
-        <!-- TITLE -->
-        <h2 id="modalTitle"></h2>
-
-        <!-- META INFO -->
-        <div class="meta-row">
-            <span class="badge type" id="modalType"></span>
-            <span class="badge level" id="modalLevel"></span>
-            <span class="badge category" id="modalCategory"></span>
-        </div>
-
-        <!-- CONTENT -->
-        <div class="modal-section">
-            <h4>Description</h4>
-            <p id="modalDesc"></p>
-        </div>
-
-        <div class="modal-section">
-            <h4>Research</h4>
-            <a id="modalResearch" target="_blank" class="research-link"></a>
-        </div>
-
-        <div class="modal-section">
-            <h4>Steps</h4>
-            <pre id="modalSteps"></pre>
-        </div>
-
-        <button class="full-page-btn" onclick="closeModal()">← Back</button>
-
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.searchable');
-
-    function applyFilters() {
-        const keyword = searchInput.value.toLowerCase();
-        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-
-        cards.forEach(card => {
-            const title = card.dataset.title || "";
-            const desc = card.dataset.desc || "";
-            const disease = card.dataset.disease || "";
-
-            const matchesSearch = title.includes(keyword) || desc.includes(keyword);
-            const matchesDisease = (activeFilter === 'all' || disease === activeFilter);
-
-            if (matchesSearch && matchesDisease) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-
-        // Hide section titles (Emergency/Recommended) if no cards match
-        document.querySelectorAll('.section').forEach(section => {
-            const visibleCards = section.querySelectorAll('.searchable[style="display: block;"]').length;
-            section.style.display = (visibleCards === 0) ? "none" : "block";
-        });
-    }
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            applyFilters();
-        });
-    });
-
-    searchInput.addEventListener('keyup', applyFilters);
-});
-
-/* ===========================
-   CARD
-=========================== */
-
-function createCard(item, type){
-    return `
-        <div class="treatment-card ${type}-card">
-            <div class="treatment-title">${item.title}</div>
-            <div class="treatment-type">${item.type}</div>
-            <div class="treatment-desc">${item.description}</div>
-            <div class="treatment-footer">
-                <span>Level: ${item.level}</span>
-                <span>View</span>
+            <div class="ch-modal-section">
+                <h4>Description</h4>
+                <p id="modalDesc"></p>
             </div>
+
+            <div class="ch-modal-section" id="modalStepsWrap">
+                <h4>Steps</h4>
+                <ol class="ch-steps" id="modalSteps"></ol>
+            </div>
+
+            <div class="ch-modal-section">
+                <h4>Research</h4>
+                <a id="modalResearch" class="ch-research"></a>
+            </div>
+
+            <button type="button" class="ch-back-btn" data-close>&larr; Back</button>
         </div>
-    `;
-}
+    </div>
 
-/* ===========================
-   EMERGENCY
-=========================== */
+</div>
 
-let showAll = false;
-
-function renderEmergency(){
-    const grid = document.getElementById("emergencyGrid");
-    grid.innerHTML = "";
-
-    let data = showAll ? emergencyTreatments : emergencyTreatments.slice(0,3);
-
-    data.forEach(item => {
-        grid.innerHTML += createCard(item, 'emergency');
-    });
-}
-
-function toggleEmergency() {
-    const hiddenCards = document.querySelectorAll('.extra-card');
-    const btn = document.querySelector('.see-more');
-
-    let isHidden = hiddenCards[0].style.display === "none";
-
-    hiddenCards.forEach(card => {
-        card.style.display = isHidden ? "block" : "none";
-    });
-
-    btn.innerText = isHidden ? "Show Less ↑" : "See More ↓";
-}
-
-/* ===========================
-   RECOMMENDED
-=========================== */
-
-function renderRecommended(){
-    const grid = document.getElementById("recommendedGrid");
-    grid.innerHTML = "";
-
-    recommendedTreatments.forEach(item => {
-        grid.innerHTML += createCard(item, 'recommended');
-    });
-}
-
-/* INIT */
-renderEmergency();
-renderRecommended();
-
-/* ===========================
-popup details
-=========================== */
-
-function openModal(title, type, level, category, desc, research, steps) {
-    document.getElementById("modalTitle").innerText = title;
-
-    // TYPE (tak perlu dynamic)
-    document.getElementById("modalType").innerText = type;
-
-    // LEVEL
-    let levelEl = document.getElementById("modalLevel");
-    levelEl.innerText = "Level: " + level;
-
-    levelEl.className = "badge level"; // reset
-
-    if (level.toLowerCase() === "high") {
-        levelEl.classList.add("level-high");
-    } else if (level.toLowerCase() === "moderate") {
-        levelEl.classList.add("level-mid");
-    } else {
-        levelEl.classList.add("level-easy");
-    }
-
-    // CATEGORY
-    let catEl = document.getElementById("modalCategory");
-    catEl.innerText = category;
-
-    catEl.className = "badge category"; // reset
-
-    if (category.toLowerCase() === "emergency") {
-        catEl.classList.add("cat-emergency");
-    } else {
-        catEl.classList.add("cat-recommended");
-    }
-
-    // CONTENT
-    document.getElementById("modalDesc").innerText = desc;
-    document.getElementById("modalResearch").innerText = research;
-    document.getElementById("modalSteps").innerText = steps;
-
-    document.getElementById("treatmentModal").style.display = "block";
-
-    // research
-    let researchEl = document.getElementById("modalResearch");
-
-if (research) {
-    researchEl.href = research;
-    researchEl.innerText = "View Research Study";
-} else {
-    researchEl.innerText = "No research provided";
-    researchEl.removeAttribute("href");
-}
-}
-function closeModal() {
-    document.getElementById("treatmentModal").style.display = "none";
-}
-
-</script>
+@include('treatment.partials.scripts')
 
 @endsection
