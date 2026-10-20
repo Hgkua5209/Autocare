@@ -7,19 +7,33 @@ use App\Models\Treatment;
 
 class TreatmentController extends Controller
 {
-    // 🔥 Display treatment page
+    // Display the Care Hub page
     public function index()
     {
-        $treatments = Treatment::all();
+        // Most severe first, then alphabetical, so urgent plans always lead.
+        $levelRank = ['high' => 0, 'moderate' => 1, 'mid' => 1, 'low' => 2, 'easy' => 2];
 
-        // 🔥 This line extracts unique non-empty disease names
-        $diseases = Treatment::distinct()->pluck('disease_name')->filter()->toArray();
+        $treatments = Treatment::all()
+            ->sortBy(fn ($t) => [
+                $levelRank[strtolower((string) $t->level)] ?? 3,
+                strtolower((string) $t->title),
+            ], SORT_REGULAR)
+            ->values();
 
-        // pecahkan ikut category
-        $emergency = $treatments->where('category', 'emergency');
-        $recommended = $treatments->where('category', 'recommended');
+        // Unique, non-empty disease names (case-insensitive), alphabetical.
+        $diseases = $treatments
+            ->pluck('disease_name')
+            ->map(fn ($d) => trim((string) $d))
+            ->filter()
+            ->unique(fn ($d) => strtolower($d))
+            ->sort(SORT_NATURAL | SORT_FLAG_CASE)
+            ->values()
+            ->all();
 
-        // FIXED: Added 'diseases' to the compact array so your view can see it!
+        // Split by category (case-insensitive).
+        $emergency = $treatments->filter(fn ($t) => strtolower((string) $t->category) === 'emergency')->values();
+        $recommended = $treatments->filter(fn ($t) => strtolower((string) $t->category) === 'recommended')->values();
+
         return view('treatment.treatment', compact('treatments', 'emergency', 'recommended', 'diseases'));
     }
 
