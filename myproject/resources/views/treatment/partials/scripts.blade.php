@@ -1,7 +1,7 @@
 <script>
 (function () {
-    // Data comes from the server as JSON (safe-encoded by @json), not interpolated into inline handlers.
-    const TREATMENTS = @json($treatments->keyBy('id'));
+    // Data comes from the server as JSON (safely encoded), not interpolated into inline handlers.
+    const TREATMENTS = {!! json_encode($treatments->keyBy('id'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) !!};
 
     const root = document.querySelector('.carehub');
     const searchInput = document.getElementById('searchInput');
