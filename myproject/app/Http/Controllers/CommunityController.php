@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Like;
 use App\Models\Comment;
 use App\Models\Save;
+use App\Models\Event;
 
 class CommunityController extends Controller
 {
@@ -41,7 +42,26 @@ class CommunityController extends Controller
             ->latest()
             ->get();
 
-        return view('community.community', compact('publicPosts', 'myPosts', 'savedPosts'));
+        // EVENTS (admins also see unpublished drafts)
+        $isAdmin = auth()->check() && auth()->user()->role === 'admin';
+        $eventQuery = fn () => $isAdmin ? Event::query() : Event::published();
+
+        $upcomingEvents = $eventQuery()
+            ->whereRaw('COALESCE(ends_at, starts_at) >= ?', [now()])
+            ->orderBy('starts_at')
+            ->get();
+
+        $pastEvents = $eventQuery()
+            ->whereRaw('COALESCE(ends_at, starts_at) < ?', [now()])
+            ->orderByDesc('starts_at')
+            ->limit(10)
+            ->get();
+
+        $eventTypes = Event::TYPES;
+
+        return view('community.community', compact(
+            'publicPosts', 'myPosts', 'savedPosts', 'upcomingEvents', 'pastEvents', 'eventTypes'
+        ));
     }
 
     public function store(Request $request)
