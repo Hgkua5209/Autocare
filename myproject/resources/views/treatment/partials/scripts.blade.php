@@ -1,7 +1,7 @@
 <script>
 (function () {
-    // Data comes from the server as JSON (safe-encoded by @json), not interpolated into inline handlers.
-    const TREATMENTS = @json($treatments->keyBy('id'));
+    // Data comes from the server as JSON (safely encoded), not interpolated into inline handlers.
+    const TREATMENTS = {!! json_encode($treatments->keyBy('id'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) !!};
 
     const root = document.querySelector('.carehub');
     const searchInput = document.getElementById('searchInput');
@@ -26,6 +26,7 @@
         const filterActive = keyword !== '' || disease !== 'all' || level !== 'all';
 
         let totalShown = 0;
+        let totalMatched = 0;
 
         sections.forEach(function (section) {
             const cards = section.querySelectorAll('.searchable');
@@ -53,11 +54,15 @@
             }
 
             section.hidden = matched === 0;
-            totalShown += matched;
+            totalMatched += matched;
+            totalShown += Array.prototype.filter.call(cards, function (c) { return !c.hidden; }).length;
         });
 
-        countEl.textContent = totalShown + (totalShown === 1 ? ' care plan' : ' care plans');
-        noResults.hidden = totalShown !== 0 || !root.querySelector('.searchable');
+        const noun = totalMatched === 1 ? ' care plan' : ' care plans';
+        countEl.textContent = totalShown === totalMatched
+            ? totalMatched + noun
+            : 'Showing ' + totalShown + ' of ' + totalMatched + noun;
+        noResults.hidden = totalMatched !== 0 || !root.querySelector('.searchable');
     }
 
     let timer;

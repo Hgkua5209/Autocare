@@ -25,7 +25,7 @@ class TreatmentController extends Controller
             ->pluck('disease_name')
             ->map(fn ($d) => trim((string) $d))
             ->filter()
-            ->unique(fn ($d) => strtolower($d))
+            ->unique(fn ($d) => mb_strtolower($d))
             ->sort(SORT_NATURAL | SORT_FLAG_CASE)
             ->values()
             ->all();

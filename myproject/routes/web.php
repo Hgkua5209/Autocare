@@ -10,6 +10,7 @@ use App\Http\Controllers\FoodController;
 use App\Http\Controllers\Admin\FoodReviewController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\TreatmentController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DailyLogController;
 use App\Http\Controllers\ProgressController;
@@ -95,6 +96,15 @@ Route::post('/community/store', [CommunityController::class, 'store'])->name('co
 Route::post('/like/{id}', [CommunityController::class, 'like'])->name('like');
 Route::post('/comment/{postId}', [CommunityController::class, 'comment'])->name('comment');
 Route::post('/save/{id}', [CommunityController::class, 'save'])->name('save');
+
+// Community events (admin creates/edits; everyone reads them in the Community "Events" tab)
+Route::middleware(['auth', 'admin'])->prefix('events')->name('events.')->group(function () {
+    Route::get('/create', [EventController::class, 'create'])->name('create');
+    Route::post('/', [EventController::class, 'store'])->name('store');
+    Route::get('/{event}/edit', [EventController::class, 'edit'])->name('edit');
+    Route::put('/{event}', [EventController::class, 'update'])->name('update');
+    Route::delete('/{event}', [EventController::class, 'destroy'])->name('destroy');
+});
 
 // Treatment
 Route::get('/treatment', [TreatmentController::class, 'index'])->name('treatment');

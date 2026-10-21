@@ -47,7 +47,7 @@
     <div class="filter-container" role="group" aria-label="Filter by condition">
         <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">All Conditions</button>
         @foreach($diseases as $disease)
-            <button type="button" class="filter-btn" data-filter="{{ strtolower($disease) }}" aria-pressed="false">{{ $disease }}</button>
+            <button type="button" class="filter-btn" data-filter="{{ mb_strtolower($disease) }}" aria-pressed="false">{{ $disease }}</button>
         @endforeach
     </div>
 

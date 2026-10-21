@@ -1,12 +1,12 @@
 @php
-    $levelKey = strtolower((string) $item->level);
+    $levelKey = mb_strtolower((string) $item->level);
     $levelClass = $levelKey === 'high' ? 'level-high' : (in_array($levelKey, ['moderate', 'mid']) ? 'level-mid' : 'level-easy');
 @endphp
 <article class="ch-card {{ $variant }}-card searchable {{ !empty($extra) ? 'is-extra' : '' }}"
          data-id="{{ $item->id }}"
-         data-disease="{{ strtolower(trim((string) $item->disease_name)) }}"
+         data-disease="{{ mb_strtolower(trim((string) $item->disease_name)) }}"
          data-level="{{ $levelKey }}"
-         data-search="{{ strtolower($item->title . ' ' . $item->type . ' ' . $item->disease_name . ' ' . $item->description) }}">
+         data-search="{{ mb_strtolower($item->title . ' ' . $item->type . ' ' . $item->disease_name . ' ' . $item->description) }}">
 
     <div class="ch-card-top">
         <span class="ch-chip">{{ $item->type }}</span>

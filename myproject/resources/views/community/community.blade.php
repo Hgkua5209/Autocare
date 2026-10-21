@@ -20,9 +20,12 @@
     <div id="tab-my" class="tab" onclick="switchTab('my')">
         My Feed
     </div>
+    <div id="tab-events" class="tab" onclick="switchTab('events')">
+        Events
+    </div>
 </div>
     <!-- POST BOX -->
-<div class="post-box">
+<div class="post-box" id="postBox">
 <form method="POST" action="{{ route('community.store') }}">
     @csrf
 
@@ -285,6 +288,9 @@
     @endforeach
 
 </div>
+
+@include('community.partials.events')
+
 </div>
 
 <script>
@@ -293,45 +299,46 @@
 function toggleSaved() {
     let btn = document.getElementById('savedBtn');
 
-    let publicFeed = document.getElementById('publicFeed');
-    let myFeed = document.getElementById('myFeed');
-    let savedFeed = document.getElementById('savedFeed');
-
     if (btn.classList.contains('active')) {
-        // balik ke public
-        btn.classList.remove('active');
-        savedFeed.style.display = 'none';
-        publicFeed.style.display = 'block';
+        // back to the public feed
+        switchTab('public');
     } else {
-        // buka saved
+        // open saved posts
         btn.classList.add('active');
-        publicFeed.style.display = 'none';
-        myFeed.style.display = 'none';
-        savedFeed.style.display = 'block';
+        document.getElementById('publicFeed').style.display = 'none';
+        document.getElementById('myFeed').style.display = 'none';
+        document.getElementById('eventsFeed').style.display = 'none';
+        document.getElementById('savedFeed').style.display = 'block';
+        document.getElementById('postBox').style.display = '';
     }
 }
-    function switchTab(type) {
 
-    let publicFeed = document.getElementById('publicFeed');
-    let myFeed = document.getElementById('myFeed');
+function switchTab(type) {
+    const feeds = { public: 'publicFeed', my: 'myFeed', events: 'eventsFeed' };
+    if (!feeds[type]) type = 'public';
 
-    let tabPublic = document.getElementById('tab-public');
-    let tabMy = document.getElementById('tab-my');
+    Object.keys(feeds).forEach(function (key) {
+        document.getElementById(feeds[key]).style.display = (key === type) ? 'block' : 'none';
+        document.getElementById('tab-' + key).classList.toggle('active', key === type);
+    });
 
-    if (type === 'public') {
-        publicFeed.style.display = 'block';
-        myFeed.style.display = 'none';
+    // Leaving the saved view, and hide the "What's happening?" box on the Events tab.
+    document.getElementById('savedFeed').style.display = 'none';
+    document.getElementById('savedBtn').classList.remove('active');
+    document.getElementById('postBox').style.display = (type === 'events') ? 'none' : '';
 
-        tabPublic.classList.add('active');
-        tabMy.classList.remove('active');
-    } else {
-        publicFeed.style.display = 'none';
-        myFeed.style.display = 'block';
-
-        tabPublic.classList.remove('active');
-        tabMy.classList.add('active');
+    if (window.history && history.replaceState) {
+        const url = new URL(window.location.href);
+        if (type === 'public') { url.searchParams.delete('tab'); } else { url.searchParams.set('tab', type); }
+        history.replaceState(null, '', url);
     }
 }
+
+// Open a tab directly from the URL, e.g. /community?tab=events
+document.addEventListener('DOMContentLoaded', function () {
+    const tab = new URLSearchParams(window.location.search).get('tab');
+    if (tab === 'events' || tab === 'my') switchTab(tab);
+});
 
 function savePost(btn, postId) {
     fetch(`/save/${postId}`, {
